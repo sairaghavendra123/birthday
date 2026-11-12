@@ -1,10 +1,40 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+export const MAX_PLAYBACK_SECONDS = 135; // 02:15
+
 let globalPlayer = null;
 let pendingPlay = false;
+let hasReachedLimit = false;
 let listeners = new Set();
 
+const getPlayerCurrentTime = (player) => {
+  if (!player || typeof player.getCurrentTime !== 'function') return 0;
+  try {
+    const time = Number(player.getCurrentTime());
+    return Number.isFinite(time) ? time : 0;
+  } catch (e) {
+    return 0;
+  }
+};
+
+const isPlaybackLimitReached = (player) =>
+  hasReachedLimit || getPlayerCurrentTime(player) >= MAX_PLAYBACK_SECONDS;
+
 export const startYouTubeMusic = () => {
+  if (isPlaybackLimitReached(globalPlayer)) {
+    hasReachedLimit = true;
+    pendingPlay = false;
+    if (globalPlayer && typeof globalPlayer.pauseVideo === 'function') {
+      try {
+        globalPlayer.pauseVideo();
+      } catch (e) {
+        console.warn('Error pausing YouTube music at limit:', e);
+      }
+    }
+    listeners.forEach(fn => fn(false));
+    return;
+  }
+
   pendingPlay = true;
   listeners.forEach(fn => fn(true));
   if (globalPlayer && typeof globalPlayer.playVideo === 'function') {
@@ -21,16 +51,55 @@ export default function YouTubeMusicPlayer({ shouldPlay }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const containerRef = useRef(null);
   const playerRef = useRef(null);
+  const monitorTimerRef = useRef(null);
+
+  const stopPlaybackMonitor = () => {
+    if (monitorTimerRef.current !== null) {
+      window.clearInterval(monitorTimerRef.current);
+      monitorTimerRef.current = null;
+    }
+  };
+
+  const enforcePlaybackLimit = (player) => {
+    if (!isPlaybackLimitReached(player)) return false;
+
+    hasReachedLimit = true;
+    pendingPlay = false;
+    stopPlaybackMonitor();
+
+    if (player && typeof player.pauseVideo === 'function') {
+      try {
+        player.pauseVideo();
+      } catch (e) {
+        console.warn('Error stopping YouTube music at 02:15:', e);
+      }
+    }
+
+    setIsPlaying(false);
+    return true;
+  };
+
+  const startPlaybackMonitor = (player) => {
+    if (enforcePlaybackLimit(player)) return;
+    stopPlaybackMonitor();
+    monitorTimerRef.current = window.setInterval(() => {
+      enforcePlaybackLimit(player);
+    }, 200);
+  };
 
   useEffect(() => {
-    const handleMusicStart = () => {
-      setHasStarted(true);
-      setIsPlaying(true);
+    const handleMusicState = (playing) => {
+      if (playing) {
+        setHasStarted(true);
+        setIsPlaying(true);
+      } else {
+        setIsPlaying(false);
+      }
     };
 
-    listeners.add(handleMusicStart);
+    listeners.add(handleMusicState);
     return () => {
-      listeners.delete(handleMusicStart);
+      listeners.delete(handleMusicState);
     };
   }, []);
 
@@ -57,28 +126,38 @@ export default function YouTubeMusicPlayer({ shouldPlay }) {
             width: '220',
             height: '220',
             playerVars: {
-              loop: 1,
-              playlist: 'dOKQeqGNJwY',
+              start: 0,
+              end: MAX_PLAYBACK_SECONDS,
+              loop: 0,
               playsinline: 1,
               origin: window.location.origin
             },
             events: {
               onReady: (event) => {
                 globalPlayer = event.target;
-                if (pendingPlay) {
+                if (pendingPlay && !enforcePlaybackLimit(event.target)) {
                   try {
                     event.target.playVideo();
                     setHasStarted(true);
                     setIsPlaying(true);
+                    startPlaybackMonitor(event.target);
                   } catch (e) {}
                 }
               },
               onStateChange: (event) => {
                 // YT.PlayerState.PLAYING is 1, PAUSED is 2, ENDED is 0
                 if (event.data === 1) {
+                  if (enforcePlaybackLimit(event.target)) return;
                   setHasStarted(true);
                   setIsPlaying(true);
+                  startPlaybackMonitor(event.target);
                 } else if (event.data === 2) {
+                  stopPlaybackMonitor();
+                  setIsPlaying(false);
+                } else if (event.data === 0) {
+                  hasReachedLimit = true;
+                  pendingPlay = false;
+                  stopPlaybackMonitor();
                   setIsPlaying(false);
                 }
               }
@@ -105,6 +184,10 @@ export default function YouTubeMusicPlayer({ shouldPlay }) {
         document.body.appendChild(tag);
       }
     }
+
+    return () => {
+      stopPlaybackMonitor();
+    };
   }, []);
 
   const handleTogglePlay = (e) => {
@@ -116,12 +199,15 @@ export default function YouTubeMusicPlayer({ shouldPlay }) {
       if (isPlaying) {
         if (typeof p.pauseVideo === 'function') {
           p.pauseVideo();
+          stopPlaybackMonitor();
           setIsPlaying(false);
         }
       } else {
+        if (enforcePlaybackLimit(p)) return;
         if (typeof p.playVideo === 'function') {
           p.playVideo();
           setIsPlaying(true);
+          startPlaybackMonitor(p);
         }
       }
     } catch (err) {
