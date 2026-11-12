@@ -221,12 +221,17 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
     const lowHardware = (navigator.hardwareConcurrency || 8) <= 4;
     const pixelRatio = Math.min(window.devicePixelRatio || 1, isNarrow ? 1.75 : 2);
 
-    // 1. WebGLRenderer setup with filmic HDR curve
-    const renderer = new THREE.WebGLRenderer({
-      antialias: !lowHardware,
-      powerPreference: 'high-performance',
-      alpha: false,
-    });
+    // 1. WebGLRenderer setup with filmic HDR curve (safe fallback on context failure)
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: !lowHardware,
+        powerPreference: 'high-performance',
+        alpha: false,
+      });
+    } catch {
+      return;
+    }
     renderer.setSize(width, height);
     renderer.setPixelRatio(pixelRatio);
     renderer.outputColorSpace = THREE.SRGBColorSpace;

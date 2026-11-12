@@ -18,8 +18,8 @@ import EasterEggs from './components/EasterEggs';
 import { useEasterEggs } from './hooks/useEasterEggs';
 
 export default function App() {
-  // Opening flow states: 'butterfly' -> 'opening' -> 'diagnostic' -> 'main'
-  const [phase, setPhase] = useState('butterfly');
+  // Opening flow states: 'opening' -> 'diagnostic' -> 'butterfly' -> 'main'
+  const [phase, setPhase] = useState('opening');
   const [butterflyReturnPhase, setButterflyReturnPhase] = useState(null);
   const savedScrollRef = useRef(0);
 
@@ -34,7 +34,8 @@ export default function App() {
         window.scrollTo({ top: savedScrollRef.current, behavior: 'auto' });
       });
     } else {
-      setPhase('opening');
+      setPhase('main');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -49,8 +50,8 @@ export default function App() {
   };
 
   const handleDiagnosticFinished = () => {
-    setPhase('main');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setPhase('butterfly');
+    window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
   const scrollToSection = (id) => {
@@ -72,14 +73,6 @@ export default function App() {
       {/* Easter Egg Modal */}
       <EasterEggs activeEgg={activeEgg} onClose={closeEgg} />
 
-      {/* PHASE 0: Cinematic 3D Butterfly Effect Universe */}
-      {phase === 'butterfly' && (
-        <ButterflyEffectIntro
-          onComplete={handleButterflyFinished}
-          onStartMusic={startYouTubeMusic}
-        />
-      )}
-
       {/* PHASE 1: Minimal Anticipation Opening */}
       {phase === 'opening' && (
         <OpeningExperience onComplete={handleOpeningFinished} />
@@ -90,7 +83,15 @@ export default function App() {
         <SystemDiagnostic onComplete={handleDiagnosticFinished} />
       )}
 
-      {/* PHASE 3: The Complete Story Experience */}
+      {/* PHASE 3: Cinematic 3D Butterfly Effect Universe */}
+      {phase === 'butterfly' && (
+        <ButterflyEffectIntro
+          onComplete={handleButterflyFinished}
+          onStartMusic={startYouTubeMusic}
+        />
+      )}
+
+      {/* PHASE 4: The Complete Story Experience */}
       {phase === 'main' && (
         <main className="relative z-10 animate-fade-in">
           
