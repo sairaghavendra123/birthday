@@ -1,0 +1,166 @@
+/* =========================================
+   ⚡ FRAMER ANIMATION LOADER COMPONENT
+   ========================================= */
+.framer-loader-root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 100000;
+  background-color: #0d0b0e;
+  color: #FAF6F0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  overflow: hidden;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  transform: translateY(0%);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  transition: transform 0.6s cubic-bezier(0.77, 0.02, 0.24, 1.02),
+              border-bottom-left-radius 0.6s cubic-bezier(0.77, 0.02, 0.24, 1.02),
+              border-bottom-right-radius 0.6s cubic-bezier(0.77, 0.02, 0.24, 1.02);
+  will-change: transform, border-radius;
+}
+
+.framer-loader-root.loader-exit {
+  transform: translateY(-100%);
+  border-bottom-left-radius: 50% 120px;
+  border-bottom-right-radius: 50% 120px;
+  pointer-events: none;
+}
+
+.framer-loader-root.loader-done {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+.framer-loader-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: clamp(1.75rem, 4vw, 3.2rem) clamp(1.75rem, 5vw, 4.5rem) 0;
+  box-sizing: border-box;
+}
+
+.framer-loader-brand {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(1.2rem, 2.3vw, 1.55rem);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: #FAF6F0;
+  display: inline-flex;
+  align-items: baseline;
+  animation: framerBrandAppear 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.framer-brand-reg {
+  font-size: 0.62em;
+  vertical-align: super;
+  margin-left: 2px;
+  font-weight: 400;
+  color: #E8CF8E;
+  letter-spacing: 0;
+}
+
+@keyframes framerBrandAppear {
+  0% {
+    opacity: 0.001;
+    filter: blur(10px);
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+.framer-loader-mid {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 clamp(1.75rem, 5vw, 4.5rem);
+  box-sizing: border-box;
+}
+
+.framer-bar-mask {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.framer-bar-line {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #E8CF8E 0%, #FAF6F0 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 14px rgba(232, 207, 142, 0.6);
+  will-change: width;
+}
+
+.framer-loader-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0 clamp(1.75rem, 5vw, 4.5rem) clamp(1.5rem, 4vw, 3.2rem);
+  box-sizing: border-box;
+}
+
+.framer-counter-wrap {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 0.8;
+  font-weight: 300;
+  letter-spacing: -0.06em;
+  color: #FAF6F0;
+  font-variant-numeric: tabular-nums;
+}
+
+.framer-counter-num {
+  font-size: clamp(5.5rem, 18vw, 20rem);
+  font-weight: 300;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  color: #FAF6F0;
+}
+
+.framer-counter-pct {
+  font-size: clamp(2.2rem, 7.2vw, 8rem);
+  font-weight: 300;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  color: #E8CF8E;
+  margin-left: 0.04em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .framer-loader-root {
+    transition: opacity 0.25s ease !important;
+    border-radius: 0 !important;
+    transform: none !important;
+  }
+  .framer-loader-root.loader-exit {
+    opacity: 0 !important;
+    transform: none !important;
+  }
+  .framer-loader-brand {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}

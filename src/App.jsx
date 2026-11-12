@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import BackgroundEffects from './components/BackgroundEffects';
 import YouTubeMusicPlayer, { startYouTubeMusic } from './components/YouTubeMusicPlayer';
+import AnimationLoader from './components/AnimationLoader';
 import ButterflyEffectIntro from './components/ButterflyEffectIntro';
 import OpeningExperience from './components/OpeningExperience';
 import SystemDiagnostic from './components/SystemDiagnostic';
@@ -18,8 +19,9 @@ import EasterEggs from './components/EasterEggs';
 import { useEasterEggs } from './hooks/useEasterEggs';
 
 export default function App() {
-  // Opening flow states: 'opening' -> 'diagnostic' -> 'butterfly' -> 'main'
-  const [phase, setPhase] = useState('opening');
+  // Opening flow states: 'pre-opening' (during loader) -> 'opening' -> 'diagnostic' -> 'butterfly' -> 'main'
+  const [showLoader, setShowLoader] = useState(true);
+  const [phase, setPhase] = useState('pre-opening');
   const [butterflyReturnPhase, setButterflyReturnPhase] = useState(null);
   const savedScrollRef = useRef(0);
 
@@ -72,6 +74,22 @@ export default function App() {
 
       {/* Easter Egg Modal */}
       <EasterEggs activeEgg={activeEgg} onClose={closeEgg} />
+
+      {/* PHASE 0: Framer Editorial Curtain Loader */}
+      {showLoader && (
+        <AnimationLoader
+          brand="dhathri"
+          badge="®"
+          durationMs={3000}
+          onReveal={() => setPhase('opening')}
+          onComplete={() => setShowLoader(false)}
+        />
+      )}
+
+      {/* Backdrop while loader covers the initial screen */}
+      {phase === 'pre-opening' && (
+        <div className="fixed inset-0 z-40 bg-[#151311]" aria-hidden="true" />
+      )}
 
       {/* PHASE 1: Minimal Anticipation Opening */}
       {phase === 'opening' && (
