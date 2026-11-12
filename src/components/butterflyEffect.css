@@ -1,0 +1,685 @@
+/* =====================================================================
+   🦋 DHATHRI — THE BUTTERFLY EFFECT (Cinematic 3D Opening Experience)
+   Scoped cleanly under #butterfly-effect / .be-* to preserve existing site
+   ===================================================================== */
+#butterfly-effect {
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-italic: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Space Mono', monospace;
+
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  max-width: 100% !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 15000;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 65% at 50% 42%, rgba(68, 22, 128, 0.38) 0%, rgba(25, 8, 52, 0.24) 48%, transparent 78%),
+    radial-gradient(circle at 22% 28%, rgba(126, 34, 206, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 78% 68%, rgba(168, 85, 247, 0.14) 0%, transparent 48%),
+    #030108;
+  color: #f9f2e3;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  font-family: var(--font-serif);
+  box-sizing: border-box;
+}
+
+#butterfly-effect *,
+#butterfly-effect *::before,
+#butterfly-effect *::after {
+  box-sizing: border-box;
+}
+
+#butterfly-effect.be-exiting {
+  opacity: 0;
+  transform: scale(1.035);
+  pointer-events: none;
+}
+
+#butterfly-effect.be-gone {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.be-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#be-canvas-2d {
+  display: none;
+}
+
+#butterfly-effect.be-mode-2d #be-canvas-webgl {
+  display: none;
+}
+
+#butterfly-effect.be-mode-2d #be-canvas-2d {
+  display: block;
+}
+
+.be-cosmic-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    radial-gradient(ellipse 75% 60% at 50% 46%, transparent 38%, rgba(3, 1, 8, 0.56) 85%, rgba(2, 1, 6, 0.88) 100%);
+}
+
+.be-horizon-floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36vh;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1.6s ease;
+  background:
+    radial-gradient(ellipse 64% 48% at 50% 18%, rgba(232, 207, 142, 0.16) 0%, rgba(147, 51, 234, 0.12) 38%, transparent 72%),
+    linear-gradient(to bottom, rgba(8, 3, 20, 0) 0%, rgba(9, 4, 22, 0.52) 48%, rgba(4, 1, 10, 0.92) 100%);
+}
+
+.be-horizon-floor::before {
+  content: "";
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  width: min(680px, 86vw);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent 0%, rgba(232, 207, 142, 0.35) 50%, transparent 100%);
+  box-shadow: 0 0 28px rgba(232, 207, 142, 0.28);
+}
+
+#butterfly-effect.be-show-horizon .be-horizon-floor {
+  opacity: 1;
+}
+
+/* Scene 1 Cinematic Quote */
+.be-scene1-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  pointer-events: none;
+  text-align: center;
+}
+
+.be-scene1-quote {
+  max-width: 34ch;
+  margin: 0;
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.32rem, 3.3vw, 2.35rem);
+  line-height: 1.48;
+  letter-spacing: 0.03em;
+  color: #f6ecd7;
+  text-shadow: 0 0 30px rgba(232, 207, 142, 0.32), 0 0 56px rgba(147, 51, 234, 0.42);
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(14px) scale(0.985);
+  transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 1.5s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.be-scene1-quote.is-visible {
+  opacity: 0.96;
+  filter: blur(0px);
+  transform: translateY(0) scale(1);
+}
+
+.be-scene1-quote.is-fading {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(-10px) scale(1.015);
+}
+
+/* Scene 4 Floating Memory Photos (Unmodified original aspect & appearance) */
+.be-photo-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.be-memory-card {
+  position: absolute;
+  width: clamp(138px, 19vw, 224px);
+  padding: 6px 6px 10px;
+  border-radius: 14px;
+  background: rgba(18, 9, 34, 0.62);
+  border: 1px solid rgba(232, 207, 142, 0.48);
+  box-shadow:
+    0 22px 54px rgba(0, 0, 0, 0.72),
+    0 0 36px rgba(232, 207, 142, 0.22),
+    0 0 64px rgba(147, 51, 234, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform: translate(-50%, -50%) scale(0.7) translateY(14px);
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 1.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s ease;
+  will-change: transform, opacity;
+}
+
+.be-memory-card::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle, rgba(255, 225, 148, 0.42) 0%, rgba(232, 207, 142, 0.08) 45%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+  z-index: 0;
+}
+
+.be-memory-card::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -120%;
+  width: 75%;
+  height: 160%;
+  background: linear-gradient(110deg, transparent 0%, rgba(255, 244, 212, 0.28) 50%, transparent 100%);
+  transform: skewX(-18deg);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.be-memory-card.is-entering {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1.02) translateY(0px);
+}
+
+.be-memory-card.is-entering::before {
+  opacity: 0.9;
+}
+
+.be-memory-card.is-entering::after {
+  animation: beLightSweep 2.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+
+.be-memory-card:hover {
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 0 46px rgba(255, 220, 140, 0.48),
+    0 0 70px rgba(168, 85, 247, 0.38);
+  z-index: 12;
+}
+
+.be-memory-card.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1.08) translateY(-18px);
+}
+
+.be-memory-frame {
+  position: relative;
+  z-index: 1;
+  border-radius: 9px;
+  overflow: hidden;
+  background: #10081c;
+}
+
+.be-memory-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: cover;
+  object-position: center 24%;
+}
+
+.be-memory-caption {
+  position: relative;
+  z-index: 1;
+  margin: 7px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #e8cf8e;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.92;
+}
+
+@keyframes beLightSweep {
+  0% { left: -120%; opacity: 0; }
+  25% { opacity: 1; }
+  100% { left: 165%; opacity: 0; }
+}
+
+/* Scene 5 & 6: DHATHRI Luxury Name Reveal + CTA */
+.be-finale-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(2.1rem, 7.5vh, 4.4rem);
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 1.4rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.be-name-stage {
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  filter: blur(8px);
+  transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 1.5s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.be-name-stage.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+.be-name-halo {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: min(560px, 92vw);
+  height: 170px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(255, 215, 130, 0.28) 0%, rgba(168, 85, 247, 0.16) 45%, transparent 74%);
+  filter: blur(18px);
+  pointer-events: none;
+  z-index: -1;
+  animation: beHaloPulse 4.2s ease-in-out infinite;
+}
+
+@keyframes beHaloPulse {
+  0%, 100% { opacity: 0.72; transform: translate(-50%, -50%) scale(0.98); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+}
+
+.be-title-dhathri {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(2.85rem, 8.6vw, 5.75rem);
+  line-height: 1;
+  letter-spacing: 0.28em;
+  padding-left: 0.28em;
+  text-transform: uppercase;
+  background: linear-gradient(
+    115deg,
+    #b78b3c 0%,
+    #f6de9c 22%,
+    #fff7e2 42%,
+    #e2bc6b 58%,
+    #fff2cc 78%,
+    #c59643 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 26px rgba(232, 207, 142, 0.45)) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.78));
+  animation: beGoldShimmer 6s linear infinite;
+}
+
+.be-title-reflection {
+  display: block;
+  margin: -0.18em auto 0;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(2.85rem, 8.6vw, 5.75rem);
+  line-height: 0.85;
+  letter-spacing: 0.28em;
+  padding-left: 0.28em;
+  text-transform: uppercase;
+  color: rgba(232, 207, 142, 0.19);
+  transform: scaleY(-0.56);
+  transform-origin: top center;
+  filter: blur(2.2px);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent 78%);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent 78%);
+  pointer-events: none;
+}
+
+@keyframes beGoldShimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 220% center; }
+}
+
+.be-gold-rule {
+  position: relative;
+  width: min(320px, 68vw);
+  height: 1px;
+  margin: 0.25rem auto 1rem;
+  background: linear-gradient(90deg, transparent, rgba(232, 207, 142, 0.85), transparent);
+  transform: scaleX(0);
+  opacity: 0;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.25s, opacity 1s ease 0.25s;
+}
+
+.be-name-stage.is-visible .be-gold-rule {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.be-gold-rule::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 6px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: #fff5d6;
+  box-shadow: 0 0 14px 4px rgba(255, 224, 150, 0.85);
+}
+
+.be-tagline {
+  margin: 0 auto;
+  max-width: 44ch;
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: clamp(1rem, 2.35vw, 1.42rem);
+  line-height: 1.5;
+  color: #f4e8d1;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85), 0 0 24px rgba(232, 207, 142, 0.28);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1.2s ease 0.55s, transform 1.2s ease 0.55s;
+}
+
+.be-name-stage.is-visible .be-tagline {
+  opacity: 0.94;
+  transform: translateY(0);
+}
+
+/* Scene 6 Controls */
+.be-actions {
+  margin-top: clamp(1.1rem, 2.8vh, 1.85rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.72rem;
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.be-actions.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.be-explore-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.95rem 2.3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 232, 175, 0.78);
+  background: linear-gradient(135deg, rgba(232, 207, 142, 0.24) 0%, rgba(168, 85, 247, 0.26) 50%, rgba(201, 164, 92, 0.34) 100%);
+  color: #fff6df;
+  font-family: var(--font-serif);
+  font-size: clamp(1.08rem, 2vw, 1.28rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 12px 34px rgba(0, 0, 0, 0.52),
+    0 0 28px rgba(232, 207, 142, 0.34),
+    inset 0 1px 0 rgba(255, 248, 224, 0.45);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.28s ease,
+              background 0.28s ease;
+  overflow: hidden;
+}
+
+.be-explore-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 25%, rgba(255, 246, 214, 0.32) 50%, transparent 75%);
+  transform: translateX(-110%);
+  transition: transform 0.7s ease;
+}
+
+.be-explore-btn:hover {
+  transform: translateY(-2px) scale(1.025);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.62),
+    0 0 42px rgba(255, 224, 150, 0.6),
+    inset 0 1px 0 rgba(255, 248, 224, 0.65);
+}
+
+.be-explore-btn:hover::before {
+  transform: translateX(110%);
+}
+
+.be-explore-btn:active {
+  transform: scale(0.985);
+}
+
+.be-explore-btn:focus-visible,
+.be-replay-inline:focus-visible,
+.be-skip-btn:focus-visible {
+  outline: 2px solid #f7e3ab;
+  outline-offset: 3px;
+}
+
+.be-replay-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.be-replay-inline {
+  background: transparent;
+  border: 0;
+  padding: 0.35rem 0.75rem;
+  color: rgba(232, 207, 142, 0.82);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.be-replay-inline:hover {
+  color: #fff4d4;
+  transform: translateY(-1px);
+}
+
+.be-interact-hint {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(226, 204, 248, 0.68);
+}
+
+.be-skip-btn {
+  position: absolute;
+  top: max(1.15rem, env(safe-area-inset-top, 0px));
+  right: max(1.15rem, env(safe-area-inset-right, 0px));
+  z-index: 14;
+  background: rgba(15, 7, 29, 0.42);
+  border: 1px solid rgba(232, 207, 142, 0.28);
+  color: rgba(246, 236, 215, 0.72);
+  border-radius: 999px;
+  padding: 0.42rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: opacity 0.35s ease, color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.be-skip-btn:hover {
+  color: #fff6df;
+  border-color: rgba(232, 207, 142, 0.7);
+  background: rgba(34, 15, 62, 0.68);
+}
+
+.be-skip-btn.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Interactive Click Memory Modal inside Butterfly Effect */
+.be-mem-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(4, 1, 10, 0.84);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.be-mem-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.be-mem-modal-card {
+  position: relative;
+  max-width: min(440px, 90vw);
+  padding: 10px 10px 16px;
+  border-radius: 18px;
+  background: rgba(20, 9, 38, 0.9);
+  border: 1px solid rgba(232, 207, 142, 0.58);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.82), 0 0 50px rgba(232, 207, 142, 0.25);
+  text-align: center;
+}
+
+.be-mem-modal-card img {
+  display: block;
+  width: 100%;
+  max-height: 68vh;
+  object-fit: contain;
+  border-radius: 11px;
+}
+
+.be-mem-modal-cap {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  color: #e8cf8e;
+  text-transform: uppercase;
+}
+
+.be-mem-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 207, 142, 0.7);
+  background: #170b2b;
+  color: #fff6df;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .be-finale-overlay {
+    bottom: clamp(1.5rem, 6vh, 3rem);
+    padding: 0 1rem;
+  }
+  .be-title-dhathri,
+  .be-title-reflection {
+    letter-spacing: 0.18em;
+    padding-left: 0.18em;
+  }
+  .be-memory-card {
+    width: clamp(128px, 38vw, 175px);
+    padding: 5px 5px 8px;
+  }
+  .be-memory-card img {
+    max-height: 195px;
+  }
+  .be-memory-caption {
+    font-size: 0.54rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #butterfly-effect,
+  .be-scene1-quote,
+  .be-memory-card,
+  .be-name-stage,
+  .be-gold-rule,
+  .be-tagline,
+  .be-actions {
+    transition-duration: 0.25s !important;
+    animation: none !important;
+  }
+  .be-name-halo {
+    animation: none !important;
+  }
+  .be-memory-card.is-entering::after {
+    animation: none !important;
+  }
+}
