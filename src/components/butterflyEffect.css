@@ -684,9 +684,19 @@
 }
 
 .be-tap-card.is-leaving {
-  opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, -56%) scale(0.9) rotate(var(--tap-tilt, 0deg));
+  animation: beTapFadeOut 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes beTapFadeOut {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(var(--tap-tilt, 0deg));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -58%) scale(0.88) rotate(var(--tap-tilt, 0deg));
+  }
 }
 
 .be-tap-card-frame {

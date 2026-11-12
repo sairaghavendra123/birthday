@@ -321,11 +321,11 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
 
       scheduleTapTimeout(() => {
         setTapMemories((prev) => prev.map((m) => (m.id === id ? { ...m, isLeaving: true } : m)));
-      }, 11500);
+      }, 2400);
 
       scheduleTapTimeout(() => {
         setTapMemories((prev) => prev.filter((m) => m.id !== id));
-      }, 12100);
+      }, 2900);
     },
     [allMemories.length, scheduleTapTimeout]
   );
