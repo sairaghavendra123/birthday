@@ -35,9 +35,9 @@ const TIMELINE = {
 // Curated memories floating gracefully alongside the butterfly flight
 const STAGE_MEMORIES = [
   {
-    src: '/photos/montage/davani_lehenga_garden.jpg',
-    shortLabel: 'Garden Bloom',
-    fallbackCaption: 'Blooming with grace, outshining every flower behind her.',
+    src: '/photos/butterfly/saree_palm_smile.jpg',
+    shortLabel: 'Traditional Grace',
+    fallbackCaption: 'Draped in quiet elegance, glowing brighter than the sunlit palms.',
     start: 6.5,
     end: 10.3,
     desktopPos: { left: '22%', top: '34%' },
@@ -45,14 +45,14 @@ const STAGE_MEMORIES = [
     objectPosition: 'center 25%',
   },
   {
-    src: '/photos/montage/davani_rooftop_evening.jpg',
-    shortLabel: 'Sunset Terrace',
-    fallbackCaption: 'Golden hour glow, calm presence, and timeless elegance.',
+    src: '/photos/finale/dhathri_outdoor_srm.jpg',
+    shortLabel: 'Radiant Smile',
+    fallbackCaption: 'That effortless smile that brings warmth to every ordinary moment.',
     start: 7.9,
     end: 11.8,
     desktopPos: { left: '50%', top: '27%' },
     mobilePos: { left: '68%', top: '31%' },
-    objectPosition: 'center 20%',
+    objectPosition: 'center 22%',
   },
   {
     src: '/photos/montage/dhathri_classroom_smile.jpg',
