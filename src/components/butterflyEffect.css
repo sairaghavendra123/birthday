@@ -52,6 +52,10 @@
   pointer-events: none !important;
 }
 
+#butterfly-effect.be-tap-ready {
+  cursor: pointer;
+}
+
 .be-canvas {
   position: absolute;
   inset: 0;
@@ -642,7 +646,109 @@
   cursor: pointer;
 }
 
+/* Interactive Tap-Anywhere Memory Cards (when DHATHRI name is visible) */
+.be-tap-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.be-tap-card {
+  position: absolute;
+  width: clamp(146px, 20vw, 226px);
+  padding: 6px 6px 10px;
+  border-radius: 14px;
+  background: rgba(18, 9, 34, 0.78);
+  border: 1px solid rgba(232, 207, 142, 0.58);
+  box-shadow:
+    0 22px 54px rgba(0, 0, 0, 0.78),
+    0 0 38px rgba(232, 207, 142, 0.28),
+    0 0 64px rgba(147, 51, 234, 0.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  pointer-events: auto;
+  cursor: pointer;
+  animation: beTapBloomIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transition: opacity 0.55s ease, transform 0.55s ease, box-shadow 0.25s ease;
+  will-change: transform, opacity;
+}
+
+.be-tap-card:hover {
+  box-shadow:
+    0 26px 62px rgba(0, 0, 0, 0.85),
+    0 0 48px rgba(255, 224, 150, 0.5),
+    0 0 72px rgba(168, 85, 247, 0.38);
+  z-index: 16;
+}
+
+.be-tap-card.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -56%) scale(0.9) rotate(var(--tap-tilt, 0deg));
+}
+
+.be-tap-card-frame {
+  border-radius: 9px;
+  overflow: hidden;
+  background: #10081c;
+}
+
+.be-tap-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 240px;
+  object-fit: cover;
+  object-position: center 24%;
+}
+
+.be-tap-close {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 207, 142, 0.65);
+  background: rgba(20, 9, 38, 0.94);
+  color: #fff6df;
+  font-size: 0.85rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+}
+
+@keyframes beTapBloomIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.35) rotate(var(--tap-tilt, 0deg));
+    filter: brightness(1.35) blur(4px);
+  }
+  65% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.04) rotate(var(--tap-tilt, 0deg));
+    filter: brightness(1.05) blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(var(--tap-tilt, 0deg));
+    filter: brightness(1) blur(0);
+  }
+}
+
 @media (max-width: 640px) {
+  .be-tap-card {
+    width: clamp(130px, 38vw, 178px);
+    padding: 5px 5px 8px;
+  }
+  .be-tap-card img {
+    max-height: 195px;
+  }
   .be-finale-overlay {
     bottom: clamp(1.5rem, 6vh, 3rem);
     padding: 0 1rem;

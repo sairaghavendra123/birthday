@@ -188,6 +188,7 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
   const [isExiting, setIsExiting] = useState(false);
   const [spotlightIndex, setSpotlightIndex] = useState(null);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [tapMemories, setTapMemories] = useState([]);
 
   // Discrete DOM HUD state updated strictly on phase/card transitions
   const [sceneState, setSceneState] = useState({
@@ -201,11 +202,18 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
 
   const skipRef = useRef(false);
   const isPausedRef = useRef(false);
+  const showNameRef = useRef(false);
   const nextTapIdxRef = useRef(0);
+  const tapIdRef = useRef(0);
+  const tapTimeoutsRef = useRef(new Set());
 
   useEffect(() => {
     isPausedRef.current = spotlightIndex !== null;
   }, [spotlightIndex]);
+
+  useEffect(() => {
+    showNameRef.current = sceneState.showName;
+  }, [sceneState.showName]);
 
   useEffect(() => {
     const onResize = () => setIsNarrow(window.innerWidth < 640);
@@ -264,12 +272,82 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
     [allMemories]
   );
 
+  const clearTapMemories = useCallback(() => {
+    tapTimeoutsRef.current.forEach((timerId) => clearTimeout(timerId));
+    tapTimeoutsRef.current.clear();
+    setTapMemories([]);
+  }, []);
+
+  useEffect(() => () => clearTapMemories(), [clearTapMemories]);
+
+  const scheduleTapTimeout = useCallback((fn, delay) => {
+    const id = window.setTimeout(() => {
+      tapTimeoutsRef.current.delete(id);
+      fn();
+    }, delay);
+    tapTimeoutsRef.current.add(id);
+  }, []);
+
+  const dismissTapMemory = useCallback(
+    (id) => {
+      setTapMemories((prev) => prev.map((m) => (m.id === id ? { ...m, isLeaving: true } : m)));
+      scheduleTapTimeout(() => {
+        setTapMemories((prev) => prev.filter((m) => m.id !== id));
+      }, 550);
+    },
+    [scheduleTapTimeout]
+  );
+
+  const spawnMemoryAtPoint = useCallback(
+    (clientX, clientY) => {
+      if (!allMemories.length) return;
+      setHasInteracted(true);
+      const memoryIndex = nextTapIdxRef.current % allMemories.length;
+      nextTapIdxRef.current += 1;
+
+      const vw = typeof window !== 'undefined' ? window.innerWidth : 1024;
+      const vh = typeof window !== 'undefined' ? window.innerHeight : 768;
+      const padX = Math.min(125, vw * 0.24);
+      const padY = Math.min(155, vh * 0.24);
+      const x = Math.max(padX, Math.min(vw - padX, clientX));
+      const y = Math.max(padY, Math.min(vh - padY, clientY));
+      const tilt = ((memoryIndex % 5) - 2) * 1.8;
+      const id = ++tapIdRef.current;
+
+      setTapMemories((prev) => {
+        const trimmed = prev.length >= 6 ? prev.slice(prev.length - 5) : prev;
+        return [...trimmed, { id, x, y, memoryIndex, tilt, isLeaving: false }];
+      });
+
+      scheduleTapTimeout(() => {
+        setTapMemories((prev) => prev.map((m) => (m.id === id ? { ...m, isLeaving: true } : m)));
+      }, 11500);
+
+      scheduleTapTimeout(() => {
+        setTapMemories((prev) => prev.filter((m) => m.id !== id));
+      }, 12100);
+    },
+    [allMemories.length, scheduleTapTimeout]
+  );
+
   const openNextButterflyMemory = useCallback(() => {
     setHasInteracted(true);
     const idx = nextTapIdxRef.current % allMemories.length;
     nextTapIdxRef.current += 1;
     setSpotlightIndex(idx);
   }, [allMemories.length]);
+
+  const handleStageTap = useCallback(
+    (e) => {
+      if (!sceneState.showName || spotlightIndex !== null || isExiting) return;
+      if (e.target.closest('button, a, .be-mem-modal, .be-tap-card, .be-memory-card')) return;
+      if (use2DFallback) {
+        soundFx.playHarmonicChime();
+      }
+      spawnMemoryAtPoint(e.clientX, e.clientY);
+    },
+    [sceneState.showName, spotlightIndex, isExiting, use2DFallback, spawnMemoryAtPoint]
+  );
 
   const handleExploreUniverse = useCallback(() => {
     if (isExiting) return;
@@ -288,6 +366,8 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
     soundFx.playClick();
     soundFx.playHarmonicChime();
     skipRef.current = false;
+    nextTapIdxRef.current = 0;
+    clearTapMemories();
     setSpotlightIndex(null);
     setHasInteracted(false);
     setSceneState({
@@ -299,7 +379,7 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
       showSkip: true,
     });
     setReplaySeed((prev) => prev + 1);
-  }, [stageMemories]);
+  }, [stageMemories, clearTapMemories]);
 
   const handleSkipToReveal = useCallback(() => {
     soundFx.playClick();
@@ -627,6 +707,10 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
 
     const handlePointerMove = (e) => {
       updatePointer(e.clientX, e.clientY);
+      if (showNameRef.current) {
+        canvas.style.cursor = 'pointer';
+        return;
+      }
       if (butterflyRig.root.visible) {
         raycaster.setFromCamera(pointerNDC, camera);
         const hits = raycaster.intersectObjects(butterflyRig.clickableTargets, false);
@@ -635,7 +719,7 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
     };
 
     const handlePointerDown = (e) => {
-      // Ignore DOM button clicks (cards, skip, explore, modal)
+      // Ignore DOM button/card/modal clicks
       if (e.target !== canvas) return;
       updatePointer(e.clientX, e.clientY);
       raycaster.setFromCamera(pointerNDC, camera);
@@ -648,15 +732,22 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
           const bPos = new THREE.Vector3();
           butterflyRig.root.getWorldPosition(bPos);
           emitBurst(bPos, 85, 3.2);
-          openNextButterflyMemory();
+          if (!showNameRef.current) {
+            openNextButterflyMemory();
+          }
           return;
         }
       }
 
       const dir = raycaster.ray.direction.clone().normalize();
       const targetPt = raycaster.ray.origin.clone().addScaledVector(dir, baseCamZ * 0.85);
-      soundFx.playClick();
-      emitBurst(targetPt, 36, 2.2);
+      if (showNameRef.current) {
+        soundFx.playHarmonicChime();
+        emitBurst(targetPt, 56, 2.6);
+      } else {
+        soundFx.playClick();
+        emitBurst(targetPt, 36, 2.2);
+      }
     };
 
     canvas.addEventListener('pointermove', handlePointerMove, { passive: true });
@@ -1107,6 +1198,7 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
 
   const rootClassNames = [
     sceneState.showHorizon ? 'be-show-horizon' : '',
+    sceneState.showName && spotlightIndex === null ? 'be-tap-ready' : '',
     isExiting ? 'be-exiting' : '',
     use2DFallback ? 'be-mode-2d' : '',
   ]
@@ -1114,7 +1206,7 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
     .join(' ');
 
   return (
-    <div id="butterfly-effect" className={rootClassNames}>
+    <div id="butterfly-effect" className={rootClassNames} onClick={handleStageTap}>
       {/* Dual WebGL / 2D Fallback Canvases styled identically to butterflyEffect.css */}
       <canvas ref={webglCanvasRef} id="be-canvas-webgl" className="be-canvas" />
       <canvas ref={canvas2dRef} id="be-canvas-2d" className="be-canvas" />
@@ -1177,6 +1269,57 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
         })}
       </div>
 
+      {/* Tap-Anywhere Floating Memory Cards (active when DHATHRI name appears) */}
+      <div className="be-tap-stage" aria-live="polite">
+        {tapMemories.map((item) => {
+          const mem = allMemories[item.memoryIndex];
+          if (!mem) return null;
+          return (
+            <div
+              key={item.id}
+              className={`be-tap-card ${item.isLeaving ? 'is-leaving' : ''}`}
+              style={{
+                left: `${item.x}px`,
+                top: `${item.y}px`,
+                '--tap-tilt': `${item.tilt}deg`,
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                soundFx.playClick();
+                setSpotlightIndex(item.memoryIndex);
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label={`View memory: ${mem.shortLabel || mem.tag}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  soundFx.playClick();
+                  setSpotlightIndex(item.memoryIndex);
+                }
+              }}
+            >
+              <button
+                type="button"
+                className="be-tap-close"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  soundFx.playClick();
+                  dismissTapMemory(item.id);
+                }}
+                aria-label="Close memory card"
+              >
+                ×
+              </button>
+              <div className="be-tap-card-frame">
+                <img src={mem.src} alt={mem.shortLabel || mem.tag} />
+              </div>
+              <p className="be-memory-caption">✦ {mem.shortLabel || mem.tag}</p>
+            </div>
+          );
+        })}
+      </div>
+
       {/* Scene 5 & 6: DHATHRI Golden Mirror Reveal + Explore CTA */}
       <div className="be-finale-overlay">
         <div className={`be-name-stage ${sceneState.showName ? 'is-visible' : ''}`}>
@@ -1205,8 +1348,8 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
             </button>
             <span className="be-interact-hint">
               {hasInteracted
-                ? '✦ Tap the butterfly anytime for another memory'
-                : '✦ Tip: Tap the butterfly or any photo card'}
+                ? '✦ Tap anywhere anytime for another memory'
+                : '✦ Tip: Tap anywhere on screen for her memories'}
             </span>
           </div>
         </div>
@@ -1224,7 +1367,10 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
       {/* Interactive Photo Spotlight Modal */}
       <div
         className={`be-mem-modal ${activeSpotlight ? 'is-open' : ''}`}
-        onClick={() => setSpotlightIndex(null)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setSpotlightIndex(null);
+        }}
       >
         {activeSpotlight && (
           <div className="be-mem-modal-card" onClick={(e) => e.stopPropagation()}>
