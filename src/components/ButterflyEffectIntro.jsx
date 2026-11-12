@@ -397,8 +397,8 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
     });
     scene.add(nebulaGroup);
 
-    // 2. Bokeh Stardust Field (spacious delicate golden & violet stars)
-    const starCount = narrow || lowHardware ? 220 : 420;
+    // 2. Bokeh Stardust Field (calm, balanced warm golden & soft violet stars)
+    const starCount = narrow || lowHardware ? 320 : 660;
     const starGeo = new THREE.BufferGeometry();
     const starPos = new Float32Array(starCount * 3);
     const starSizes = new Float32Array(starCount);
@@ -415,19 +415,19 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
     ];
 
     for (let i = 0; i < starCount; i++) {
-      const isCenterCluster = i < starCount * 0.1;
+      const isCenterCluster = i < starCount * 0.12;
       if (isCenterCluster) {
         const angle = Math.random() * Math.PI * 2;
         const rad = 1.6 + Math.pow(Math.random(), 0.7) * 6.5;
         starPos[i * 3] = Math.cos(angle) * rad * 1.35;
         starPos[i * 3 + 1] = Math.sin(angle) * rad * 0.8 + (Math.random() - 0.5) * 2.5;
         starPos[i * 3 + 2] = (Math.random() - 0.5) * 8.0 - 3.5;
-        starSizes[i] = 0.45 + Math.random() * 1.35;
+        starSizes[i] = 0.85 + Math.random() * 1.65;
       } else {
         starPos[i * 3] = (Math.random() - 0.5) * 34;
         starPos[i * 3 + 1] = (Math.random() - 0.42) * 22;
-        starPos[i * 3 + 2] = -Math.random() * 28 - 1.0;
-        starSizes[i] = 0.4 + Math.random() * 1.5;
+        starPos[i * 3 + 2] = -Math.random() * 24 - 1.0;
+        starSizes[i] = 0.8 + Math.random() * 1.9;
       }
 
       starPhases[i] = Math.random() * Math.PI * 2;
@@ -973,12 +973,12 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
     setSize();
     window.addEventListener('resize', setSize);
 
-    const stars = Array.from({ length: 45 }, () => ({
+    const stars = Array.from({ length: 85 }, () => ({
       x: Math.random(),
       y: Math.random(),
-      r: 0.7 + Math.random() * 2.2,
+      r: 0.9 + Math.random() * 2.1,
       phase: Math.random() * Math.PI * 2,
-      gold: Math.random() > 0.2,
+      gold: Math.random() > 0.18,
     }));
 
     const petals = Array.from({ length: 24 }, () => ({
