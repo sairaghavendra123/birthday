@@ -14,54 +14,54 @@ import {
 import { birthdayConfig } from '../config/birthday.config';
 import { soundFx } from '../hooks/useSoundEffects';
 
-// Enriched memory milestones with brotherly retrospective notes
+// Enriched memory milestones with retrospective notes
 const enrichedMilestones = [
   {
     chapter: "01",
-    year: "The Beginning",
-    tag: "Small & Sweet",
-    title: "When you were innocent",
-    description: "Dressed in silk and flowers, smiling politely for the camera. We really thought you were going to stay that quiet.",
+    year: "Day One",
+    tag: "Quiet Beginnings",
+    title: "Before all the chaos started",
+    description: "Dressed in silk and flowers, smiling politely for the camera. Back before we became close friends, nobody could have predicted the non-stop laughter and memories we'd make together.",
     photo: "/photos/memories/timeline_childhood.jpg",
     objectPosition: "center 10%",
-    secretNote: "Brother's Retrospective: You used to hold my finger when walking around the house. Now you use that exact same hand to snatch my French fries and pretend you didn't see anything.",
+    secretNote: "Retrospective: Looking back at childhood photos, you had this quiet, polite smile that fooled everyone. Now you use that sweet face to snatch my French fries and pretend you didn't see anything.",
     sentiment: "Innocence: 100% • Silence: Extinct",
     badgeColor: "bg-[#C5A059]/15 text-[#C5A059] border-[#C5A059]/30"
   },
   {
     chapter: "02",
-    year: "Growing Up",
+    year: "Best Friends",
     tag: "Unbreakable Bond",
     title: "Teammates against the world",
-    description: "Through every school year, every exam panic, and every family function where we made fun of everyone together.",
+    description: "Through every school year, every exam panic, and every long day where we laughed through the chaos together.",
     photo: "/photos/memories/beach_duo.jpg",
     objectPosition: "center 15%",
-    secretNote: "Brother's Retrospective: We developed an entire telepathic language of eyebrow twitches at boring family gatherings so we wouldn't burst out laughing in front of everyone.",
+    secretNote: "Retrospective: We developed an entire telepathic language of eyebrow twitches and glance-jokes so we wouldn't burst out laughing during boring lectures and serious moments.",
     sentiment: "Telepathic Connection: 100%",
     badgeColor: "bg-[#8FA89B]/20 text-[#2C4A3E] border-[#8FA89B]/40"
   },
   {
     chapter: "03",
-    year: "The Syndicate",
-    tag: "Family Chaos",
-    title: "Looking out for each other",
-    description: "We fought over tiny things, but whenever anyone else tried to bother either of us, we stood side by side.",
+    year: "True Loyalty",
+    tag: "In Our Corner",
+    title: "Always looking out for each other",
+    description: "We argue over silly little things, but whenever life gets tough or either of us needs backup, we stand side by side without hesitation.",
     photo: "/photos/memories/sky_trio.jpg",
     objectPosition: "center 68%",
-    secretNote: "Brother's Retrospective: You are allowed to roast and annoy me 24/7. But the second anyone else in the world dares to bother you, they have to deal with me first.",
-    sentiment: "Brotherly Defense: Defcon 1",
+    secretNote: "Retrospective: You are allowed to roast and tease me 24/7. But the second anyone else in the world dares to trouble you, they have to deal with me first.",
+    sentiment: "Defense Level: Defcon 1",
     badgeColor: "bg-[#C4738B]/15 text-[#C4738B] border-[#C4738B]/30"
   },
   {
     chapter: "04",
-    year: "Today",
-    tag: "Always & Forever",
-    title: "The person you've become",
-    description: "Stronger, smarter, more resilient, and still the one person who knows how to drive me crazy and make me proud at the exact same time.",
+    year: "Today & Beyond",
+    tag: "Lifelong Friends",
+    title: "The wonderful person you are",
+    description: "Smarter, stronger, more radiant every day — and still the one friend who knows how to roast me and inspire me at the exact same time.",
     photo: "/photos/memories/finger_heart.jpg",
     objectPosition: "center 22%",
-    secretNote: "Brother's Retrospective: Watching you grow into who you are today is the best thing. No matter where life takes us, I am always right in your corner. Happy Birthday, Davani.",
-    sentiment: "Sister Pride: 10,000%",
+    secretNote: "Retrospective: Watching you achieve your dreams and grow into who you are today is the best thing. No matter where our paths take us, I am always in your corner cheering you on. Happy Birthday, Dhathri.",
+    sentiment: "Pride: 10,000%",
     badgeColor: "bg-[#E08D79]/20 text-[#B85338] border-[#E08D79]/40"
   }
 ];
@@ -141,19 +141,19 @@ export default function MemoryTimeline() {
         </div>
       </div>
 
-      {/* BIG Right Side GIF: Goma & Peach Sibling Hug */}
+      {/* BIG Right Side GIF: Goma & Peach Friendship Hug */}
       <div className="hidden xl:flex flex-col items-center absolute -right-28 2xl:-right-44 top-[55%] z-20 animate-soft-float pointer-events-auto" style={{ animationDelay: '-3.5s' }}>
         <div className="relative group cursor-pointer" onClick={() => soundFx.playHarmonicChime()}>
           <img 
             src="/gifs/goma-peach.gif" 
-            alt="Sibling Bond Goma & Peach" 
+            alt="Bond Goma & Peach" 
             className="w-40 h-40 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 object-contain rounded-3xl drop-shadow-2xl hover:scale-110 transition-transform" 
           />
           <div className="mt-3 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C4738B]/40 shadow-xl text-xs font-mono text-[#C4738B] font-bold tracking-wide">
             "PARTNERS IN CRIME 🤍"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
-            Unbreakable sibling team
+            Unbreakable team
           </span>
         </div>
       </div>
@@ -220,7 +220,7 @@ export default function MemoryTimeline() {
             })}
           </div>
 
-          {/* Sibling Badge */}
+          {/* Friendship Badge */}
           <div className="hidden sm:flex items-center gap-1 text-[11px] font-serif italic text-[#726860] pr-2">
             <Clock size={12} className="text-[#C5A059]" />
             <span>2008 – Forever</span>
@@ -351,7 +351,7 @@ export default function MemoryTimeline() {
                           <div className="flex items-center gap-2.5">
                             <MessageSquareQuote size={16} className="text-[#C5A059] group-hover:scale-110 transition-transform" />
                             <span className="font-mono text-xs uppercase tracking-wider text-[#1E1B18] font-bold">
-                              Brother's Secret Retrospective
+                              Secret Retrospective
                             </span>
                           </div>
                           
@@ -370,7 +370,7 @@ export default function MemoryTimeline() {
                               "{item.secretNote}"
                             </p>
                             <span className="text-[10px] font-mono text-[#C5A059] block mt-2 uppercase tracking-widest">
-                              — Verified Brotherly Memory Log
+                              — Verified Memory Log
                             </span>
                           </div>
                         )}

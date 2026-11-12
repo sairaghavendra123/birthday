@@ -32,7 +32,7 @@ export default function EnvelopeLetter() {
             "SPECIAL DISPATCH 💌"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
-            Priority Brother Delivery
+            Priority Special Delivery
           </span>
         </div>
       </div>
@@ -46,10 +46,10 @@ export default function EnvelopeLetter() {
             className="w-40 h-40 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 object-contain rounded-3xl drop-shadow-2xl hover:scale-110 transition-transform" 
           />
           <div className="mt-3 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C4738B]/40 shadow-xl text-xs font-mono text-[#C4738B] font-bold tracking-wide">
-            "HAPPY SISTER TEARS 🥺"
+            "HAPPY TEARS 🥺"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
-            Unfolded brotherly love
+            Unfolded with care
           </span>
         </div>
       </div>
@@ -63,7 +63,7 @@ export default function EnvelopeLetter() {
           {letter.envelopePrompt}
         </h2>
         <p className="text-xs sm:text-sm font-serif italic text-[#726860]">
-          Sent with brotherly affection and 0% sarcasm.
+          Sent with warm affection and 0% sarcasm.
         </p>
       </div>
 
@@ -83,10 +83,10 @@ export default function EnvelopeLetter() {
 
             <div className="space-y-1 relative z-10">
               <span className="font-mono text-[11px] text-[#726860] uppercase tracking-widest">
-                For: Davani Appala
+                For: G. Sivadhathri
               </span>
               <h3 className="text-2xl font-display font-medium text-[#1E1B18]">
-                A Letter From Your Brother
+                A Personal Letter For You
               </h3>
             </div>
 
@@ -116,7 +116,7 @@ export default function EnvelopeLetter() {
               </span>
               <div className="flex items-center gap-1.5 text-[#C4738B]">
                 <Heart size={14} fill="#C4738B" />
-                <span className="font-mono text-xs uppercase tracking-wider">Brother's Letter</span>
+                <span className="font-mono text-xs uppercase tracking-wider">Personal Letter</span>
               </div>
             </div>
 
@@ -139,11 +139,11 @@ export default function EnvelopeLetter() {
               <div className="flex items-center gap-2">
                 <img 
                   src="/gifs/goma-peach.gif" 
-                  alt="Brother & Sister Peach Goma" 
+                  alt="Peach Goma" 
                   className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-xl drop-shadow-sm hover:scale-105 transition-transform" 
                 />
                 <span className="text-[11px] font-mono text-[#C4738B] italic hidden sm:inline-block">
-                  (Official Sibling Seal)
+                  (Official Seal)
                 </span>
               </div>
               <div className="flex flex-col items-end space-y-1">

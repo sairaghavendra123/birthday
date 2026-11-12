@@ -42,45 +42,33 @@ export default function BirthdayFinale({ onSisterNameClick }) {
     });
   };
 
+  const celebrationPhotos = [
+    {
+      src: "/photos/finale/dhathri_outdoor_srm.jpg",
+      alt: "Dhathri Outdoor Portrait",
+      tag: "Pure Sunshine ☀️",
+      rotation: "-rotate-2 sm:-rotate-3 hover:rotate-0",
+      aspect: "aspect-[4/5] sm:aspect-[3/4]",
+    },
+    {
+      src: "/photos/finale/dhathri_celebration_portrait.png",
+      alt: "Dhathri Birthday Queen",
+      tag: "Birthday Queen ✨",
+      rotation: "rotate-0 sm:scale-105 z-10",
+      aspect: "aspect-[3/4]",
+    },
+    {
+      src: "/photos/finale/dhathri_cafe_floral.jpg",
+      alt: "Dhathri Floral Smile",
+      tag: "Radiant Grace 🌸",
+      rotation: "rotate-2 sm:rotate-3 hover:rotate-0",
+      aspect: "aspect-[4/5] sm:aspect-[3/4]",
+    }
+  ];
+
   return (
     <section className="py-28 px-4 sm:px-6 max-w-5xl mx-auto relative z-10 text-center">
       
-      {/* ================= LOW-OPACITY BACKGROUND SIBLING PHOTOS ================= */}
-      <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden select-none">
-        
-        {/* Left Photo: Beach Candid (B&W) */}
-        <div className="absolute -left-10 sm:-left-20 lg:-left-28 top-16 w-60 sm:w-80 lg:w-96 aspect-3/4 rounded-3xl overflow-hidden opacity-20 rotate-[-5deg] shadow-2xl filter blur-[0.5px] transition-all duration-700 hover:opacity-40">
-          <img 
-            src="/photos/finale/bg_finale_2.jpg" 
-            alt="Davani & Mahesh Beach Memory" 
-            className="w-full h-full object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#FFFDF9]/60 via-transparent to-[#FFFDF9]/80" />
-        </div>
-
-        {/* Center Hero Photo: Sunny Color Sibling Selfie */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-4 w-72 sm:w-[520px] lg:w-[680px] aspect-16/10 rounded-3xl overflow-hidden opacity-18 filter blur-[0.6px] transition-all duration-700 hover:opacity-35">
-          <img 
-            src="/photos/finale/bg_finale_1.jpg" 
-            alt="Davani & Mahesh Sunshine Selfie" 
-            className="w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#FFFDF9]/50 via-transparent to-[#FFFDF9]/80" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,#FFFDF9_95%)]" />
-        </div>
-
-        {/* Right Photo: Korean Finger Heart (B&W) */}
-        <div className="absolute -right-10 sm:-right-20 lg:-right-28 top-28 w-60 sm:w-80 lg:w-96 aspect-3/4 rounded-3xl overflow-hidden opacity-20 rotate-[5deg] shadow-2xl filter blur-[0.5px] transition-all duration-700 hover:opacity-40">
-          <img 
-            src="/photos/finale/bg_finale_3.jpg" 
-            alt="Davani Korean Finger Heart" 
-            className="w-full h-full object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-tl from-[#FFFDF9]/60 via-transparent to-[#FFFDF9]/80" />
-        </div>
-
-      </div>
-
       {/* BIG Left Side GIF: Birthday Queen Dancing */}
       <div className="hidden xl:flex flex-col items-center absolute -left-28 2xl:-left-44 top-28 z-20 animate-soft-float pointer-events-auto">
         <div className="relative group cursor-pointer" onClick={() => { soundFx.playCelebration(); handleLaunchMoreConfetti(); }}>
@@ -103,11 +91,11 @@ export default function BirthdayFinale({ onSisterNameClick }) {
         <div className="relative group cursor-pointer" onClick={() => { soundFx.playCelebration(); handleLaunchMoreConfetti(); }}>
           <img 
             src="/gifs/mikonay.gif" 
-            alt="Proud Brother Mikonay Dance" 
+            alt="Celebration Dance" 
             className="w-40 h-40 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 object-contain rounded-3xl drop-shadow-2xl hover:scale-110 transition-transform" 
           />
           <div className="mt-3 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#E08D79]/40 shadow-xl text-xs font-mono text-[#C4738B] font-bold tracking-wide">
-            "PROUD BROTHER: 1000% 🥳"
+            "PROUD & HAPPY: 1000% 🥳"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
             Celebration Protocol Active
@@ -139,17 +127,35 @@ export default function BirthdayFinale({ onSisterNameClick }) {
             (Tap name for surprise)
           </p>
 
-          {/* Cute Birthday Dance Celebration GIF */}
-          <div className="flex justify-center pt-2">
-            <img 
-              src="/gifs/happy-friday-dance.gif" 
-              alt="Birthday Victory Dance" 
-              className="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded-2xl drop-shadow-md hover:scale-110 transition-transform" 
-            />
+          {/* Featured Birthday Celebration Photo Trio */}
+          <div className="pt-6 pb-2 max-w-4xl mx-auto px-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-6 items-center">
+              {celebrationPhotos.map((photo, idx) => (
+                <div 
+                  key={idx}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    soundFx.playCelebration();
+                    handleLaunchMoreConfetti();
+                  }}
+                  className={`relative group mx-auto w-full max-w-[280px] sm:max-w-none ${photo.aspect} rounded-3xl overflow-hidden shadow-2xl border-4 border-white/95 bg-white shadow-[#C5A059]/15 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:z-20 cursor-pointer ${photo.rotation}`}
+                >
+                  <img 
+                    src={photo.src} 
+                    alt={photo.alt} 
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-[10px] sm:text-[11px] font-mono text-[#C4738B] font-bold uppercase tracking-wider shadow-md whitespace-nowrap transition-all duration-300 group-hover:scale-105">
+                    {photo.tag}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Sister Poetry / Quotes */}
+        {/* Best Friend Poetry / Quotes */}
         <div className="max-w-lg mx-auto bg-white/70 backdrop-blur-md rounded-3xl p-8 border border-[#C5A059]/20 shadow-xl shadow-[#C5A059]/5 space-y-3 font-serif italic text-lg sm:text-xl text-[#1E1B18]/90">
           {finale.quotes.map((q, idx) => (
             <p key={idx} className={idx === finale.quotes.length - 1 ? "text-[#C4738B] font-semibold pt-2" : ""}>

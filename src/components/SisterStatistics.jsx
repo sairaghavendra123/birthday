@@ -30,7 +30,7 @@ export default function SisterStatistics({ onOpenRoastMode }) {
         <div className="relative group cursor-pointer" onClick={() => soundFx.playBuzzer()}>
           <img 
             src="/gifs/milkangry-milk-and-mocha.gif" 
-            alt="Pouting Sister Milk & Mocha" 
+            alt="Pouting Milk & Mocha" 
             className="w-40 h-40 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 object-contain rounded-3xl drop-shadow-2xl hover:scale-110 transition-transform" 
           />
           <div className="mt-3 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C4738B]/40 shadow-xl text-xs font-mono text-[#C4738B] font-bold tracking-wide">
@@ -47,14 +47,14 @@ export default function SisterStatistics({ onOpenRoastMode }) {
         <div className="relative group cursor-pointer" onClick={() => soundFx.playClick()}>
           <img 
             src="/gifs/cute-cha-pri.gif" 
-            alt="Teasing Brother Verdict" 
+            alt="Teasing Verdict" 
             className="w-40 h-40 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 object-contain rounded-3xl drop-shadow-2xl hover:scale-110 transition-transform" 
           />
           <div className="mt-3 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C5A059]/40 shadow-xl text-xs font-mono text-[#1E1B18] font-bold tracking-wide">
             "AUDIT RESULT: 100% ACCURATE 📊"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
-            Scientific Brother Telemetry
+            Scientific Telemetry
           </span>
         </div>
       </div>
@@ -65,13 +65,13 @@ export default function SisterStatistics({ onOpenRoastMode }) {
         <div className="text-center max-w-xl mx-auto mb-12 space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C5A059]/15 text-[#C5A059] text-xs font-mono tracking-widest uppercase">
             <BarChart3 size={14} />
-            Confidential Brother Evaluation
+            Confidential Evaluation
           </div>
           <h2 className="text-3xl sm:text-4xl font-display font-medium text-[#1E1B18]">
-            Annual Sister Performance Review
+            Annual Performance Review
           </h2>
           <p className="text-xs sm:text-sm font-serif italic text-[#726860]">
-            Empirical data collected across 365 days of relentless sibling dynamics.
+            Empirical data collected across 365 days of relentless dynamics.
           </p>
         </div>
 
@@ -118,13 +118,13 @@ export default function SisterStatistics({ onOpenRoastMode }) {
           <div className="flex justify-center mb-1">
             <img 
               src="/gifs/cute-cat-cute-kittens.gif" 
-              alt="Cute Sister Kitten" 
+              alt="Cute Kitten" 
               className="w-20 h-20 sm:w-24 sm:h-24 object-contain rounded-2xl drop-shadow-md hover:scale-105 transition-transform"
             />
           </div>
 
           <p className="text-xs uppercase font-mono tracking-widest text-[#726860]">
-            Overall Sister Rating
+            Overall Rating
           </p>
           <div className="flex items-center justify-center gap-1 text-[#C5A059]">
             {[...Array(rating.score)].map((_, i) => (
@@ -149,7 +149,7 @@ export default function SisterStatistics({ onOpenRoastMode }) {
             className="group relative inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#1E1B18] text-[#FAF6F0] text-xs sm:text-sm font-mono uppercase tracking-wider hover:bg-[#C4738B] transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl shadow-black/10 cursor-pointer"
           >
             <Flame size={16} className="text-[#E08D79] group-hover:animate-bounce" />
-            Activate Sibling Roast Mode
+            Activate Roast Mode
             <span className="text-[10px] text-[#FAF6F0]/60 font-sans tracking-normal ml-1">
               (Proceed at your own risk)
             </span>

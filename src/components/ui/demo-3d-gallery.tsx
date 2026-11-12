@@ -25,7 +25,7 @@ export default function DemoOne() {
       />
       <div className="h-screen inset-0 pointer-events-none fixed flex items-center justify-center text-center px-3 mix-blend-exclusion text-white">
         <h1 className="font-serif text-4xl md:text-7xl tracking-tight">
-          <span className="italic">Davani's Memory Tunnel</span>
+          <span className="italic">Dhathri's Memory Tunnel</span>
         </h1>
       </div>
 

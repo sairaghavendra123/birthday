@@ -92,8 +92,9 @@ export default function SecretButton() {
             <div className="w-full max-h-[340px] rounded-2xl overflow-hidden border border-[#E8D5C4] shadow-inner bg-[#FAF6F0]">
               <img
                 src={secretButton.finalePhoto}
-                alt="Secret Brother Sister Moment"
+                alt="Secret Moment"
                 className="w-full h-full object-cover max-h-[340px]"
+                style={{ objectPosition: secretButton.objectPosition || 'center 20%' }}
               />
             </div>
 

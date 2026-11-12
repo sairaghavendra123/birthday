@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import BackgroundEffects from './components/BackgroundEffects';
+import YouTubeMusicPlayer from './components/YouTubeMusicPlayer';
 import OpeningExperience from './components/OpeningExperience';
 import SystemDiagnostic from './components/SystemDiagnostic';
 import CinematicIntro from './components/CinematicIntro';
 import ComplaintDepartment from './components/ComplaintDepartment';
-import SisterStatistics from './components/SisterStatistics';
-import RoastMode from './components/RoastMode';
-import MemoryTimeline from './components/MemoryTimeline';
 import FilmStrip from './components/FilmStrip';
 import EmotionalTransition from './components/EmotionalTransition';
 import EnvelopeLetter from './components/EnvelopeLetter';
@@ -15,20 +13,16 @@ import BirthdayFinale from './components/BirthdayFinale';
 import SecretButton from './components/SecretButton';
 import PhotoWall from './components/PhotoWall';
 import GorgeousTribute from './components/GorgeousTribute';
-import AudioPlayer from './components/AudioPlayer';
 import EasterEggs from './components/EasterEggs';
 import { useEasterEggs } from './hooks/useEasterEggs';
 
 export default function App() {
   // Opening flow states: 'opening' -> 'diagnostic' -> 'main'
   const [phase, setPhase] = useState('opening');
-  const [isRoastModeOpen, setIsRoastModeOpen] = useState(false);
-  const [musicAutoStart, setMusicAutoStart] = useState(false);
 
   const { activeEgg, triggerSisterNameClick, closeEgg } = useEasterEggs();
 
   const handleOpeningFinished = () => {
-    setMusicAutoStart(true);
     setPhase('diagnostic');
   };
 
@@ -50,8 +44,8 @@ export default function App() {
       {/* Background ambient lighting and film grain */}
       <BackgroundEffects />
 
-      {/* Floating Audio Controller */}
-      <AudioPlayer autoStart={musicAutoStart} />
+      {/* YouTube Background Music Player (Audio only, starts on continue) */}
+      <YouTubeMusicPlayer />
 
       {/* Easter Egg Modal */}
       <EasterEggs activeEgg={activeEgg} onClose={closeEgg} />
@@ -73,20 +67,8 @@ export default function App() {
           {/* Section 7: Cinematic Introduction */}
           <CinematicIntro onNext={() => scrollToSection('complaints-section')} />
 
-          {/* Section 8: Brother's Official Complaint Department */}
+          {/* Section 8: The Official Best-Friend Complaint Department */}
           <ComplaintDepartment />
-
-          {/* Section 9: Sister Statistics & Review */}
-          <SisterStatistics onOpenRoastMode={() => setIsRoastModeOpen(true)} />
-
-          {/* Section 10: Sibling Roast Mode Modal */}
-          <RoastMode
-            isOpen={isRoastModeOpen}
-            onClose={() => setIsRoastModeOpen(false)}
-          />
-
-          {/* Section 11: Childhood / Memory Timeline ("Somehow, We Grew Up") */}
-          <MemoryTimeline />
 
           {/* Section 12: Draggable Film Strip */}
           <FilmStrip />
@@ -94,7 +76,7 @@ export default function App() {
           {/* Section 13: Things I Will Never Say Out Loud (Emotional Transition) */}
           <EmotionalTransition />
 
-          {/* Section 14: Brother's Unfolding Letter */}
+          {/* Section 14: The Unfolding Letter */}
           <EnvelopeLetter />
 
           {/* Section 15: Emotional Photo Montage */}
@@ -116,10 +98,10 @@ export default function App() {
           <footer className="py-16 text-center text-[#726860] border-t border-[#C5A059]/20 relative z-10">
             <div className="max-w-md mx-auto space-y-2 px-4">
               <p className="font-serif italic text-sm">
-                Crafted with care, patience, and 365 days of sibling banter.
+                Crafted with care, patience, and 365 days of memories.
               </p>
               <p className="font-mono text-[11px] uppercase tracking-widest text-[#C5A059]">
-                Mahesh → Davani Appala • Birthday Edition
+                Sai → G. Sivadhathri • Birthday Edition
               </p>
             </div>
           </footer>

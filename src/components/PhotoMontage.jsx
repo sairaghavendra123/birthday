@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, ZoomIn, Sparkles } from 'lucide-react';
 import { birthdayConfig } from '../config/birthday.config';
 import { soundFx } from '../hooks/useSoundEffects';
 
 export default function PhotoMontage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isJokeVisible, setIsJokeVisible] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const { montage, montageCloser, montageJoke } = birthdayConfig;
 
   useEffect(() => {
+    if (isLightboxOpen) return; // Pause auto-advance when user is viewing in 4K lightbox
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % montage.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, [montage.length]);
+  }, [montage.length, isLightboxOpen]);
 
   useEffect(() => {
     const jokeTimer = setTimeout(() => {
@@ -22,12 +24,27 @@ export default function PhotoMontage() {
     return () => clearTimeout(jokeTimer);
   }, []);
 
-  const handlePrev = () => {
+  // Keyboard navigation when 4K lightbox is open
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!isLightboxOpen) return;
+      if (e.key === 'Escape') setIsLightboxOpen(false);
+      if (e.key === 'ArrowRight') handleNext();
+      if (e.key === 'ArrowLeft') handlePrev();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen]);
+
+  const handlePrev = (e) => {
+    if (e) e.stopPropagation();
     soundFx.playClick();
     setCurrentIndex((prev) => (prev - 1 + montage.length) % montage.length);
   };
 
-  const handleNext = () => {
+  const handleNext = (e) => {
+    if (e) e.stopPropagation();
     soundFx.playClick();
     setCurrentIndex((prev) => (prev + 1) % montage.length);
   };
@@ -46,7 +63,7 @@ export default function PhotoMontage() {
             className="w-40 h-40 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 object-contain rounded-3xl drop-shadow-2xl hover:scale-110 transition-transform" 
           />
           <div className="mt-3 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C5A059]/40 shadow-xl text-xs font-mono text-[#C5A059] font-bold tracking-wide">
-            "DAVANI APPALA ✨"
+            "G. SIVADHATHRI ✨"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
             Birthday Queen Energy
@@ -59,7 +76,7 @@ export default function PhotoMontage() {
         <div className="relative group cursor-pointer" onClick={() => soundFx.playHarmonicChime()}>
           <img 
             src="/gifs/happy-friday-dance.gif" 
-            alt="Sibling Celebration Dance" 
+            alt="Celebration Dance" 
             className="w-40 h-40 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 object-contain rounded-3xl drop-shadow-2xl hover:scale-110 transition-transform" 
           />
           <div className="mt-3 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#E08D79]/40 shadow-xl text-xs font-mono text-[#E08D79] font-bold tracking-wide">
@@ -76,40 +93,54 @@ export default function PhotoMontage() {
         
         {/* Editorial Subtitle */}
         <span className="font-mono text-xs uppercase tracking-[0.3em] text-[#C5A059]">
-          Cinematic Sibling Journey
+          Cinematic Memory Journey
         </span>
 
         {/* Cinematic Single-Photo Frame */}
-        <div className="relative max-w-lg w-full aspect-4/5 rounded-3xl overflow-hidden shadow-2xl shadow-[#1E1B18]/15 border-4 border-white bg-white">
+        <div 
+          onClick={() => {
+            soundFx.playClick();
+            setIsLightboxOpen(true);
+          }}
+          className="relative max-w-lg w-full aspect-4/5 rounded-3xl overflow-hidden shadow-2xl shadow-[#1E1B18]/15 border-4 border-white bg-white cursor-pointer group"
+        >
           <img
             key={currentIndex}
             src={currentItem.photo}
-            alt={currentItem.caption}
-            className="w-full h-full object-cover animate-fade-in transition-all duration-1000"
+            alt={currentItem.caption || `G. Sivadhathri memory ${currentIndex + 1}`}
+            className="w-full h-full object-cover animate-fade-in transition-all duration-1000 group-hover:scale-105"
             style={{ objectPosition: currentItem.objectPosition || 'center top' }}
+            decoding="async"
           />
 
-          {/* Minimal cinematic caption overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 sm:p-10 text-white">
-            <p className="font-serif italic text-2xl sm:text-3xl tracking-wide drop-shadow-md">
-              "{currentItem.caption}"
-            </p>
-            <span className="font-mono text-[11px] text-white/70 uppercase tracking-widest mt-1">
-              Chapter {currentIndex + 1} of {montage.length}
+          {/* 4K Zoom hint on hover */}
+          <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/60 backdrop-blur-xs text-white text-[11px] font-mono px-3 py-1 rounded-full flex items-center gap-1.5 shadow-lg border border-white/20">
+            <ZoomIn size={12} className="text-[#C5A059]" /> 4K Ultra-HD
+          </div>
+
+          {/* Minimal cinematic compliment caption overlay */}
+          <div className="absolute inset-x-0 bottom-0 pt-20 pb-6 px-6 sm:px-8 bg-gradient-to-t from-black/75 via-black/30 to-transparent flex flex-col justify-end text-white pointer-events-none">
+            {currentItem.caption && (
+              <p className="font-serif italic text-lg sm:text-2xl leading-snug tracking-wide drop-shadow-md">
+                “{currentItem.caption}”
+              </p>
+            )}
+            <span className="font-mono text-[11px] text-white/75 uppercase tracking-widest mt-1.5">
+              Chapter {currentIndex + 1} of {montage.length} • Tap for 4K
             </span>
           </div>
 
           {/* Nav Controls */}
           <button
             onClick={handlePrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/70 backdrop-blur-sm transition-all"
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 text-white hover:bg-[#C5A059] backdrop-blur-sm transition-all hover:scale-110 active:scale-95 z-20 shadow-lg"
             aria-label="Previous photo"
           >
             <ChevronLeft size={20} />
           </button>
           <button
             onClick={handleNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/70 backdrop-blur-sm transition-all"
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 text-white hover:bg-[#C5A059] backdrop-blur-sm transition-all hover:scale-110 active:scale-95 z-20 shadow-lg"
             aria-label="Next photo"
           >
             <ChevronRight size={20} />
@@ -133,7 +164,7 @@ export default function PhotoMontage() {
           ))}
         </div>
 
-        {/* Emotional punchline with comedic sibling tension-breaker */}
+        {/* Emotional punchline with comedic tension-breaker */}
         <div className="space-y-2 pt-6">
           <h3 className="text-2xl sm:text-4xl font-display font-medium text-[#1E1B18]">
             "{montageCloser}"
@@ -146,6 +177,74 @@ export default function PhotoMontage() {
         </div>
 
       </div>
+
+      {/* 4K Fullscreen Cinematic Lightbox */}
+      {isLightboxOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/92 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fade-in"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <div 
+            className="relative max-w-4xl w-full flex flex-col items-center bg-[#1E1B18]/95 border border-[#C5A059]/40 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button 
+              onClick={() => setIsLightboxOpen(false)}
+              className="absolute top-4 right-4 z-10 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-all cursor-pointer"
+              aria-label="Close full view"
+            >
+              <X size={20} />
+            </button>
+
+            {/* Nav Arrows */}
+            <button
+              onClick={handlePrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-black/60 hover:bg-[#C5A059] text-white transition-all shadow-lg cursor-pointer hover:scale-110 active:scale-95"
+              aria-label="Previous photo"
+            >
+              <ChevronLeft size={22} />
+            </button>
+            <button
+              onClick={handleNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-black/60 hover:bg-[#C5A059] text-white transition-all shadow-lg cursor-pointer hover:scale-110 active:scale-95"
+              aria-label="Next photo"
+            >
+              <ChevronRight size={22} />
+            </button>
+
+            {/* 4K Ultra-HD Badge */}
+            <div className="mb-3 flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C5A059]/20 text-[#C5A059] text-[11px] font-mono tracking-widest uppercase border border-[#C5A059]/30">
+                <Sparkles size={12} />
+                4K Cinematic Master • Chapter {currentIndex + 1} of {montage.length}
+              </span>
+            </div>
+
+            {/* Main High-Res Image Display */}
+            <div className="w-full max-h-[70vh] flex items-center justify-center overflow-hidden rounded-2xl bg-black/60 border border-white/10 p-1">
+              <img
+                src={currentItem.photo}
+                alt={currentItem.caption || `G. Sivadhathri memory ${currentIndex + 1}`}
+                className="max-h-[68vh] w-auto max-w-full object-contain rounded-xl shadow-2xl animate-fade-in"
+              />
+            </div>
+
+            {/* Compliment Caption */}
+            <div className="mt-4 text-center max-w-lg">
+              {currentItem.caption && (
+                <p className="font-serif italic text-xl sm:text-2xl text-white drop-shadow-md">
+                  “{currentItem.caption}”
+                </p>
+              )}
+              <span className="text-[10px] font-mono text-[#A89F91] block mt-1.5">
+                G. Sivadhathri • Cinematic Memory Journey
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
     </section>
   );
 }

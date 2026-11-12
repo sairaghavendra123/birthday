@@ -23,7 +23,7 @@ export default function CinematicIntro({ onNext }) {
       <div className="absolute inset-0 z-0 overflow-hidden flex items-center justify-center">
         <img
           src={intro.heroImage}
-          alt="Davani Childhood Portrait"
+          alt="Dhathri Childhood Portrait"
           className="w-full h-full object-cover sm:object-contain max-h-[85vh] rounded-3xl opacity-30 filter blur-xs scale-105 animate-pulse duration-[10000ms] transition-transform"
           style={{ animationDuration: '16s' }}
         />
@@ -33,23 +33,23 @@ export default function CinematicIntro({ onNext }) {
       <div className="relative z-10 max-w-2xl mx-auto text-center space-y-8 flex flex-col items-center">
         
         {/* BIG Left Margin GIF */}
-        <div className="hidden xl:flex flex-col items-center absolute -left-20 2xl:-left-36 top-1/4 z-20 animate-soft-float pointer-events-auto">
+        <div className="hidden xl:flex flex-col items-center absolute -left-36 2xl:-left-52 top-1/4 z-20 animate-soft-float pointer-events-auto">
           <img 
             src="/gifs/hello-kitty.gif" 
             alt="Hello Kitty Greeting" 
-            className="w-40 h-40 xl:w-48 xl:h-48 object-contain rounded-3xl drop-shadow-2xl hover:scale-115 transition-transform" 
+            className="w-36 h-36 xl:w-44 xl:h-44 object-contain rounded-3xl drop-shadow-2xl hover:scale-115 transition-transform" 
           />
           <div className="mt-2 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C5A059]/40 shadow-xl text-xs font-mono text-[#1E1B18] font-bold">
-            "Princess Davani 👑"
+            "Princess Dhathri 👑"
           </div>
         </div>
 
         {/* BIG Right Margin GIF */}
-        <div className="hidden xl:flex flex-col items-center absolute -right-20 2xl:-right-36 top-1/4 z-20 animate-soft-float pointer-events-auto" style={{ animationDelay: '-3s' }}>
+        <div className="hidden xl:flex flex-col items-center absolute -right-36 2xl:-right-52 top-1/4 z-20 animate-soft-float pointer-events-auto" style={{ animationDelay: '-3s' }}>
           <img 
             src="/gifs/cute-cha-pri.gif" 
             alt="Childhood Joy" 
-            className="w-40 h-40 xl:w-48 xl:h-48 object-contain rounded-3xl drop-shadow-2xl hover:scale-115 transition-transform" 
+            className="w-36 h-36 xl:w-44 xl:h-44 object-contain rounded-3xl drop-shadow-2xl hover:scale-115 transition-transform" 
           />
           <div className="mt-2 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C4738B]/40 shadow-xl text-xs font-mono text-[#C4738B] font-bold">
             "Innocence Era ✨"
@@ -70,7 +70,7 @@ export default function CinematicIntro({ onNext }) {
           <div className="w-64 h-88 sm:w-72 sm:h-96 rounded-2xl overflow-hidden shadow-2xl shadow-[#C5A059]/20 border-2 border-white/80 p-1.5 bg-white/50 backdrop-blur-sm transition-transform duration-700 hover:scale-102">
             <img
               src={intro.heroImage}
-              alt="Sweet and innocent Davani"
+              alt="Sweet and innocent Dhathri"
               className="w-full h-full object-cover object-top rounded-xl transition-all duration-1000 group-hover:scale-105"
             />
           </div>
@@ -111,7 +111,7 @@ export default function CinematicIntro({ onNext }) {
               onClick={onNext}
               className="px-6 py-2.5 rounded-full bg-white/80 hover:bg-[#FAF6F0] border border-[#C5A059]/30 text-xs sm:text-sm font-sans tracking-wider text-[#1E1B18] shadow-md transition-all duration-300 hover:scale-105 flex items-center gap-2 cursor-pointer"
             >
-              See the Official Complaints
+              See the 360° Photo Wheel
               <ChevronDown size={16} className="text-[#C5A059] animate-bounce" />
             </button>
           </div>

@@ -57,18 +57,18 @@ export default function RoastMode({ isOpen, onClose }) {
           <div className="flex items-center gap-2.5 text-[#E08D79]">
             <img 
               src="/gifs/milkangry-milk-and-mocha.gif" 
-              alt="Angry Sister Reaction" 
+              alt="Angry Reaction" 
               className="w-10 h-10 object-contain rounded-lg drop-shadow" 
             />
             <div>
               <div className="flex items-center gap-1.5">
                 <Flame size={14} className="animate-bounce" />
                 <span className="font-mono text-xs uppercase tracking-widest font-bold">
-                  Sibling Roast Mode Active
+                  Roast Mode Active
                 </span>
               </div>
               <span className="text-[10px] font-mono text-white/50 block">
-                Live Sister Attitude: 100% Salt
+                Live Attitude: 100% Salt
               </span>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function RoastMode({ isOpen, onClose }) {
             </div>
 
             <p className="text-xs sm:text-sm text-white/70 font-serif italic max-w-sm mx-auto">
-              You have survived the brotherly roast protocol. Proceeding to nostalgic timeline...
+              You have survived the roast protocol. Proceeding to nostalgic timeline...
             </p>
 
             <div className="pt-4">

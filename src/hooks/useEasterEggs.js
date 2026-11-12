@@ -3,12 +3,12 @@ import { soundFx } from './useSoundEffects';
 
 export function useEasterEggs() {
   const [activeEgg, setActiveEgg] = useState(null);
-  const [sisterNameClicks, setSisterNameClicks] = useState(0);
+  const [nameClicks, setNameClicks] = useState(0);
 
-  // Keyboard sequence listener: S-I-S
+  // Keyboard sequence listener: B-F-F
   useEffect(() => {
     let buffer = [];
-    const targetSequence = ['s', 'i', 's'];
+    const targetSequence = ['b', 'f', 'f'];
 
     const handleKeyDown = (e) => {
       // Ignore if inside an input or textarea
@@ -23,8 +23,8 @@ export function useEasterEggs() {
         soundFx.playCelebration();
         setActiveEgg({
           title: "SECRET EASTER EGG UNLOCKED 🔑",
-          message: "Certified favourite sister.",
-          subtext: "(You're also my only candidate.)"
+          message: "Certified best friend.",
+          subtext: "(The truest teammate and best friend in every adventure.)"
         });
         buffer = [];
       }
@@ -34,10 +34,10 @@ export function useEasterEggs() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // 5 clicks on sister's name
-  const triggerSisterNameClick = () => {
-    const nextCount = sisterNameClicks + 1;
-    setSisterNameClicks(nextCount);
+  // 5 clicks on name
+  const triggerNameClick = () => {
+    const nextCount = nameClicks + 1;
+    setNameClicks(nextCount);
 
     if (nextCount === 5) {
       soundFx.playDiagnosticBeep(false);
@@ -46,7 +46,7 @@ export function useEasterEggs() {
         message: "Why are you clicking your own name? 😭",
         subtext: "Are you expecting an achievement trophy or something?"
       });
-      setSisterNameClicks(0);
+      setNameClicks(0);
     }
   };
 
@@ -57,7 +57,8 @@ export function useEasterEggs() {
 
   return {
     activeEgg,
-    triggerSisterNameClick,
+    triggerNameClick,
+    triggerSisterNameClick: triggerNameClick,
     closeEgg
   };
 }

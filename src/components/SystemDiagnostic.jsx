@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CheckCircle2, AlertTriangle, ShieldCheck, RefreshCw } from 'lucide-react';
 import { birthdayConfig } from '../config/birthday.config';
 import { soundFx } from '../hooks/useSoundEffects';
+import { startYouTubeMusic } from './YouTubeMusicPlayer';
 
 export default function SystemDiagnostic({ onComplete }) {
   const [completedChecks, setCompletedChecks] = useState([]);
@@ -30,6 +31,7 @@ export default function SystemDiagnostic({ onComplete }) {
 
   const handleContinue = () => {
     soundFx.playClick();
+    startYouTubeMusic();
     setShowSnark(true);
     setTimeout(() => {
       onComplete();
@@ -48,7 +50,7 @@ export default function SystemDiagnostic({ onComplete }) {
             className="w-40 h-40 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 object-contain rounded-3xl drop-shadow-2xl hover:scale-110 transition-transform" 
           />
           <div className="mt-3 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C4738B]/40 shadow-xl text-xs font-mono text-[#C4738B] font-bold tracking-wide">
-            "SECURITY AUDIT: SISTER 😾"
+            "SECURITY AUDIT: IN PROGRESS 😾"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
             Suspicion Level: 100%
@@ -56,7 +58,7 @@ export default function SystemDiagnostic({ onComplete }) {
         </div>
       </div>
 
-      {/* BIG Right Side GIF: Sister Biometrics Kitten */}
+      {/* BIG Right Side GIF: Biometrics Kitten */}
       <div className="hidden xl:flex flex-col items-center absolute right-8 2xl:right-24 top-1/2 -translate-y-1/2 z-20 animate-soft-float pointer-events-auto" style={{ animationDelay: '-3s' }}>
         <div className="relative group cursor-pointer" onClick={() => soundFx.playDiagnosticBeep(true)}>
           <img 
@@ -68,7 +70,7 @@ export default function SystemDiagnostic({ onComplete }) {
             "ATTITUDE SCAN: 99.8% 💅"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
-            Davani Appala Detected
+            G. Sivadhathri Detected
           </span>
         </div>
       </div>
@@ -155,7 +157,7 @@ export default function SystemDiagnostic({ onComplete }) {
                 className="w-24 h-24 object-contain rounded-xl drop-shadow-md hover:scale-110 transition-transform" 
               />
               <span className="text-[10px] font-mono text-[#C4738B] mt-1 uppercase tracking-wider">
-                Emergency Protocol: Brother evacuating at maximum speed
+                Emergency Protocol: Evacuating at maximum speed
               </span>
             </div>
             

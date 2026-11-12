@@ -35,8 +35,21 @@ export default function PhotoWall() {
     'gal-7': 44,
     'gal-8': 69,
     'gal-9': 41,
-    'gal-10': 58
+    'gal-10': 58,
+    'gal-11': 64,
+    'gal-12': 71,
+    'gal-13': 83,
+    'gal-14': 59,
+    'gal-15': 66,
+    'gal-16': 74,
+    'gal-17': 68,
+    'gal-18': 92
   });
+
+  // Sync displayGallery when gallery updates
+  useEffect(() => {
+    setDisplayGallery(gallery);
+  }, [gallery]);
 
   // Extract unique categories
   const categories = useMemo(() => {
@@ -180,10 +193,10 @@ export default function PhotoWall() {
           Living Archive
         </div>
         <h2 className="text-3xl sm:text-5xl font-display font-medium text-[#1E1B18]">
-          The Sister Memory Dimension
+          The Living Memory Dimension
         </h2>
         <p className="text-sm sm:text-base font-serif italic text-[#726860]">
-          Portraits, childhood moments, beach trips, and pure unscripted sibling history.
+          Portraits, shared laughter, beach trips, and pure unscripted friendship.
         </p>
 
         {/* View Mode Toggle Controls */}
@@ -227,7 +240,7 @@ export default function PhotoWall() {
             images={threeDImages}
             speed={1.2}
             zSpacing={3}
-            visibleCount={10}
+            visibleCount={14}
             falloff={{ near: 0.8, far: 14 }}
             className="h-[520px] sm:h-[620px] w-full"
           />
@@ -241,7 +254,7 @@ export default function PhotoWall() {
 
             <div className="text-white space-y-1">
               <h3 className="font-serif italic text-3xl sm:text-5xl tracking-tight text-white/95 drop-shadow-md">
-                Davani's Memory Tunnel
+                Dhathri's Memory Tunnel
               </h3>
               <p className="text-[11px] sm:text-xs font-mono text-[#F4E8D5]/80 uppercase tracking-widest">
                 Use scroll wheel, arrow keys, or touch to glide through memories
@@ -448,11 +461,12 @@ export default function PhotoWall() {
             </div>
 
             {/* Caption in lightbox */}
-            <div className="text-center text-white space-y-1 px-4">
-              <span className="text-xs font-mono uppercase tracking-widest text-[#C5A059]">
-                {gallery[activePhotoIdx].tag} • {activePhotoIdx + 1} of {gallery.length}
+            <div className="text-center text-white space-y-1.5 px-4">
+              <span className="text-xs font-mono uppercase tracking-widest text-[#C5A059] inline-flex items-center gap-1.5 bg-[#C5A059]/15 px-3 py-1 rounded-full border border-[#C5A059]/30">
+                <Sparkles size={12} />
+                4K Master Print • {gallery[activePhotoIdx].tag} • {activePhotoIdx + 1} of {gallery.length}
               </span>
-              <p className="font-serif italic text-lg sm:text-xl">
+              <p className="font-serif italic text-lg sm:text-2xl drop-shadow-md">
                 "{gallery[activePhotoIdx].caption}"
               </p>
             </div>

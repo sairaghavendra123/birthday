@@ -28,7 +28,7 @@ export default function EmotionalTransition() {
             className="w-40 h-40 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 object-contain rounded-3xl drop-shadow-2xl hover:scale-110 transition-transform" 
           />
           <div className="mt-3 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C5A059]/40 shadow-xl text-xs font-mono text-[#C5A059] font-bold tracking-wide">
-            "SIBLING TENDERNESS 🌸"
+            "WARMEST MEMORIES 🌸"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
             Rare heartfelt truths
@@ -45,7 +45,7 @@ export default function EmotionalTransition() {
             className="w-40 h-40 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 object-contain rounded-3xl drop-shadow-2xl hover:scale-110 transition-transform" 
           />
           <div className="mt-3 text-center bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C4738B]/40 shadow-xl text-xs font-mono text-[#C4738B] font-bold tracking-wide">
-            "ALWAYS YOUR BROTHER 🤍"
+            "ALWAYS HERE FOR YOU 🤍"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
             Always in your corner
@@ -73,7 +73,7 @@ export default function EmotionalTransition() {
               return <div key={idx} className="w-12 h-0.5 bg-[#C5A059]/30 my-4" />;
             }
 
-            const isHeartfelt = idx >= 5; // The transition to genuine sibling love
+            const isHeartfelt = idx >= 5; // The transition to genuine friendship & gratitude
 
             return (
               <p
@@ -91,12 +91,12 @@ export default function EmotionalTransition() {
             );
           })}
 
-          {/* Sweet Peach & Goma sibling poke sticker */}
+          {/* Sweet Peach & Goma friendship poke sticker */}
           {revealedCount >= unspokenTruths.length && (
             <div className="pt-6 animate-fade-in flex flex-col items-center gap-2">
               <img 
                 src="/gifs/peach-goma-peach-and-goma.gif" 
-                alt="Peach and Goma Sibling Tease" 
+                alt="Peach and Goma Tease" 
                 className="w-16 h-16 object-contain rounded-xl drop-shadow-sm hover:scale-110 transition-transform" 
               />
               <span className="text-[10px] font-mono text-[#C5A059] uppercase tracking-widest">

@@ -21,8 +21,8 @@ import { birthdayConfig } from '../config/birthday.config';
 import { soundFx } from '../hooks/useSoundEffects';
 
 export default function GorgeousTribute() {
-  const { gorgeousTribute, sisterName, sisterNickname } = birthdayConfig;
-  const { cards, compliments, radarScore, badge, title, subtitle, brotherNote } = gorgeousTribute;
+  const { gorgeousTribute, friendName, sisterName } = birthdayConfig;
+  const { cards, compliments, radarScore, badge, title, subtitle, friendNote, brotherNote } = gorgeousTribute;
 
   const [activePhotoIdx, setActivePhotoIdx] = useState(null);
   const [complimentIdx, setComplimentIdx] = useState(0);
@@ -192,7 +192,7 @@ export default function GorgeousTribute() {
             "100/10 BEAUTY ✨"
           </div>
           <span className="text-[10px] font-mono text-[#726860] block text-center mt-1">
-            Brother's Official Verdict
+            Official Verdict
           </span>
         </div>
       </div>
@@ -209,7 +209,7 @@ export default function GorgeousTribute() {
         </h2>
 
         <p className="text-base sm:text-lg font-serif italic text-[#726860] max-w-2xl mx-auto leading-relaxed">
-          "{brotherNote}"
+          "{friendNote || brotherNote}"
         </p>
 
         {/* Glow Mode Toggle Button */}
@@ -228,15 +228,23 @@ export default function GorgeousTribute() {
         </div>
       </div>
 
-      {/* ================= EDITORIAL PORTRAIT CARDS (6 CURATED LOOKS) ================= */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-20">
+      {/* ================= EDITORIAL PORTRAIT CARDS (CURATED LOOKS) ================= */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 sm:gap-8 mb-20">
         {cards.map((card, idx) => {
           const likes = sparkleLikes[card.id] || 0;
+          const colSpanClass = cards.length === 5 
+            ? idx < 3 
+              ? 'lg:col-span-2' 
+              : idx === 3 
+                ? 'lg:col-span-2 lg:col-start-2 md:col-span-1' 
+                : 'lg:col-span-2 md:col-span-2 md:max-w-md md:mx-auto w-full lg:max-w-none'
+            : 'lg:col-span-2';
+
           return (
             <div
               key={card.id}
               onClick={() => handleOpenPhoto(idx)}
-              className="group relative bg-white/85 backdrop-blur-md rounded-3xl p-5 border border-[#C5A059]/25 hover:border-[#C4738B]/50 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer flex flex-col justify-between overflow-hidden hover:-translate-y-1.5"
+              className={`group relative bg-white/85 backdrop-blur-md rounded-3xl p-5 border border-[#C5A059]/25 hover:border-[#C4738B]/50 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer flex flex-col justify-between overflow-hidden hover:-translate-y-1.5 ${colSpanClass}`}
             >
               {/* Card Header Tag */}
               <div className="flex items-center justify-between mb-3.5">
@@ -316,7 +324,7 @@ export default function GorgeousTribute() {
         })}
       </div>
 
-      {/* ================= INTERACTIVE SISTER GLOW SCORECARD & COMPLIMENT MACHINE ================= */}
+      {/* ================= INTERACTIVE GLOW SCORECARD & COMPLIMENT MACHINE ================= */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-20">
         
         {/* Left: Compliment Dispenser (7 cols) */}
@@ -340,7 +348,7 @@ export default function GorgeousTribute() {
             </div>
 
             <h3 className="text-2xl sm:text-3xl font-display font-medium text-[#1E1B18]">
-              Why Davani Is Truly Gorgeous
+              Why Dhathri Is Truly Gorgeous
             </h3>
 
             {/* Compliment Display Box with cute badge */}
@@ -359,7 +367,7 @@ export default function GorgeousTribute() {
                 className="w-12 h-12 object-contain rounded-full border border-[#C5A059]/30 shadow-sm"
               />
               <span className="text-xs font-mono text-[#726860]">
-                Curated by Brother Mahesh
+                Curated by Sai
               </span>
             </div>
 
@@ -374,7 +382,7 @@ export default function GorgeousTribute() {
 
         </div>
 
-        {/* Right: The Sister Glow Radar / Scorecard (5 cols) */}
+        {/* Right: The Glow Radar / Scorecard (5 cols) */}
         <div className="lg:col-span-5 bg-white/85 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A059]/30 shadow-xl flex flex-col justify-between">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C5A059]/15 text-[#C5A059] text-xs font-mono font-medium mb-4">
@@ -383,10 +391,10 @@ export default function GorgeousTribute() {
             </div>
             
             <h3 className="text-2xl font-display font-medium text-[#1E1B18] mb-1">
-              Sister Glow Matrix
+              Glow Matrix
             </h3>
             <p className="text-xs font-serif italic text-[#726860] mb-6">
-              Empirical laboratory results calculated across 20+ years of sibling life.
+              Empirical laboratory results calculated across 20+ years of shared life.
             </p>
 
             <div className="space-y-4">
@@ -414,7 +422,7 @@ export default function GorgeousTribute() {
 
           <div className="mt-6 pt-4 border-t border-[#C5A059]/20 text-center">
             <span className="text-[11px] font-mono text-[#726860] tracking-wider uppercase">
-              Final Verdict: S-Tier Sister • 10/10 Royalty
+              Final Verdict: S-Tier Royalty • 10/10
             </span>
           </div>
         </div>
@@ -433,13 +441,13 @@ export default function GorgeousTribute() {
             className="relative px-8 sm:px-12 py-4 sm:py-5 bg-gradient-to-r from-[#1E1B18] to-[#3A332C] hover:from-[#2B2520] hover:to-[#4A4239] text-white rounded-full font-serif text-base sm:text-xl tracking-wide shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-3 border border-[#C5A059]/50"
           >
             <Crown size={24} className="text-[#FFD700] animate-bounce" />
-            <span>Crown Davani Queen of the Universe 👑</span>
+            <span>Crown Dhathri Queen of the Universe 👑</span>
             <Sparkles size={20} className="text-[#C4738B]" />
           </button>
         </div>
 
         <p className="mt-3 text-xs font-mono text-[#726860]">
-          *Warning: Clicking this grants unlimited sibling boasting privileges for the next 365 days.
+          *Warning: Clicking this grants unlimited boasting privileges for the next 365 days.
         </p>
       </div>
 
@@ -489,9 +497,12 @@ export default function GorgeousTribute() {
             {/* Information Sidebar */}
             <div className="w-full md:w-2/5 p-6 sm:p-8 flex flex-col justify-between bg-[#24201C] text-white">
               <div className="space-y-4">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-[11px] font-mono tracking-widest uppercase font-bold text-[#C5A059] bg-[#C5A059]/15 px-3 py-1 rounded-full border border-[#C5A059]/30">
                     {cards[activePhotoIdx].tag}
+                  </span>
+                  <span className="text-[10px] font-mono tracking-widest uppercase font-semibold text-[#C4738B] bg-[#C4738B]/15 px-2.5 py-0.5 rounded-full border border-[#C4738B]/30">
+                    ✦ 4K ULTRA-HD
                   </span>
                   <span className="text-xs font-mono text-[#A89F91]">
                     {activePhotoIdx + 1} / {cards.length}
@@ -525,7 +536,7 @@ export default function GorgeousTribute() {
 
               <div className="pt-6 border-t border-white/10 flex items-center justify-between">
                 <span className="text-[11px] font-mono text-[#A89F91]">
-                  Davani Appala • Birthday Edition
+                  G. Sivadhathri • Birthday Edition
                 </span>
                 <button
                   onClick={(e) => handleCardSparkle(cards[activePhotoIdx].id, e)}
@@ -573,7 +584,7 @@ export default function GorgeousTribute() {
                 Officially Crowned Queen 👑
               </h3>
               <p className="text-sm font-serif italic text-[#C4738B]">
-                Davani Appala — The Most Gorgeous Sister
+                G. Sivadhathri — Simply Gorgeous
               </p>
             </div>
 
@@ -587,7 +598,7 @@ export default function GorgeousTribute() {
             </div>
 
             <div className="p-4 rounded-2xl bg-white/80 border border-[#C5A059]/20 text-xs sm:text-sm font-sans text-[#726860] leading-relaxed">
-              "By official sibling proclamation, brother Mahesh acknowledges that despite all complaints, stolen fries, and attitude, you remain undeniably gorgeous, radiant, and loved beyond measure. Happy Birthday, Davani! ❤️"
+              "By official proclamation, Sai acknowledges that despite all complaints, stolen fries, and playful banter, you remain undeniably radiant, an incredible best friend, and appreciated beyond measure. Happy Birthday, Dhathri! ✨"
             </div>
 
             <button
