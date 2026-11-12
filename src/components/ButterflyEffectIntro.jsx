@@ -35,9 +35,9 @@ const TIMELINE = {
 // Curated memories floating gracefully alongside the butterfly flight
 const STAGE_MEMORIES = [
   {
-    src: '/photos/butterfly/saree_palm_smile.jpg',
-    shortLabel: 'Traditional Grace',
-    fallbackCaption: 'Draped in quiet elegance, glowing brighter than the sunlit palms.',
+    src: '/photos/montage/davani_lehenga_garden.jpg',
+    shortLabel: 'Garden Bloom',
+    fallbackCaption: 'Blooming with grace, outshining every flower behind her.',
     start: 6.5,
     end: 10.3,
     desktopPos: { left: '22%', top: '34%' },
@@ -206,6 +206,42 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
   const nextTapIdxRef = useRef(0);
   const tapIdRef = useRef(0);
   const tapTimeoutsRef = useRef(new Set());
+  const readyIndicesRef = useRef(new Set());
+  const preloadCacheRef = useRef([]);
+
+  // Preload & decode all memory photos eagerly so tap-anywhere pops appear instantaneously
+  useEffect(() => {
+    if (typeof window === 'undefined' || !allMemories.length) return;
+    let cancelled = false;
+    readyIndicesRef.current.clear();
+    preloadCacheRef.current = allMemories.map((mem, idx) => {
+      const img = new window.Image();
+      img.decoding = 'async';
+      const markReady = () => {
+        if (!cancelled) {
+          readyIndicesRef.current.add(idx);
+        }
+      };
+      img.onload = () => {
+        if (typeof img.decode === 'function') {
+          img.decode().then(markReady, markReady);
+        } else {
+          markReady();
+        }
+      };
+      img.onerror = () => {};
+      img.src = mem.src;
+      if (img.complete && img.naturalWidth > 0) {
+        markReady();
+      }
+      return img;
+    });
+
+    return () => {
+      cancelled = true;
+      preloadCacheRef.current = [];
+    };
+  }, [allMemories]);
 
   useEffect(() => {
     isPausedRef.current = spotlightIndex !== null;
@@ -300,9 +336,22 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
 
   const spawnMemoryAtPoint = useCallback(
     (clientX, clientY) => {
-      if (!allMemories.length) return;
+      const total = allMemories.length;
+      if (!total) return;
       setHasInteracted(true);
-      const memoryIndex = nextTapIdxRef.current % allMemories.length;
+
+      let memoryIndex = nextTapIdxRef.current % total;
+      const ready = readyIndicesRef.current;
+      if (ready.size > 0 && !ready.has(memoryIndex)) {
+        for (let offset = 1; offset < total; offset++) {
+          const candidate = (memoryIndex + offset) % total;
+          if (ready.has(candidate)) {
+            memoryIndex = candidate;
+            nextTapIdxRef.current += offset;
+            break;
+          }
+        }
+      }
       nextTapIdxRef.current += 1;
 
       const vw = typeof window !== 'undefined' ? window.innerWidth : 1024;
@@ -339,6 +388,7 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
 
   const handleStageTap = useCallback(
     (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
       if (!sceneState.showName || spotlightIndex !== null || isExiting) return;
       if (e.target.closest('button, a, .be-mem-modal, .be-tap-card, .be-memory-card')) return;
       if (use2DFallback) {
@@ -1206,7 +1256,7 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
     .join(' ');
 
   return (
-    <div id="butterfly-effect" className={rootClassNames} onClick={handleStageTap}>
+    <div id="butterfly-effect" className={rootClassNames} onPointerDown={handleStageTap}>
       {/* Dual WebGL / 2D Fallback Canvases styled identically to butterflyEffect.css */}
       <canvas ref={webglCanvasRef} id="be-canvas-webgl" className="be-canvas" />
       <canvas ref={canvas2dRef} id="be-canvas-2d" className="be-canvas" />
@@ -1312,7 +1362,7 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
                 ×
               </button>
               <div className="be-tap-card-frame">
-                <img src={mem.src} alt={mem.shortLabel || mem.tag} />
+                <img src={mem.src} alt={mem.shortLabel || mem.tag} loading="eager" decoding="sync" />
               </div>
               <p className="be-memory-caption">✦ {mem.shortLabel || mem.tag}</p>
             </div>

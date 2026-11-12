@@ -670,8 +670,8 @@
   -webkit-backdrop-filter: blur(10px);
   pointer-events: auto;
   cursor: pointer;
-  animation: beTapBloomIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  transition: opacity 0.55s ease, transform 0.55s ease, box-shadow 0.25s ease;
+  animation: beTapBloomIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: box-shadow 0.25s ease;
   will-change: transform, opacity;
 }
 
@@ -735,19 +735,16 @@
 
 @keyframes beTapBloomIn {
   0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.35) rotate(var(--tap-tilt, 0deg));
-    filter: brightness(1.35) blur(4px);
+    opacity: 0.65;
+    transform: translate(-50%, -50%) scale(0.76) rotate(var(--tap-tilt, 0deg));
   }
-  65% {
+  70% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.04) rotate(var(--tap-tilt, 0deg));
-    filter: brightness(1.05) blur(0);
+    transform: translate(-50%, -50%) scale(1.03) rotate(var(--tap-tilt, 0deg));
   }
   100% {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1) rotate(var(--tap-tilt, 0deg));
-    filter: brightness(1) blur(0);
   }
 }
 
