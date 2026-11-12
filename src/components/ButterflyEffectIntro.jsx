@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
-import { birthdayConfig } from '../config/birthday.config';
 import { soundFx } from '../hooks/useSoundEffects';
 import {
   createButterflyWingMaps,
@@ -32,67 +31,95 @@ const TIMELINE = {
   INTERACTIVE_READY: 18.6,
 };
 
-// Curated memories floating gracefully alongside the butterfly flight
-const STAGE_MEMORIES = [
-  {
-    src: '/photos/montage/davani_lehenga_garden.jpg',
-    shortLabel: 'Garden Bloom',
-    fallbackCaption: 'Blooming with grace, outshining every flower behind her.',
-    start: 6.5,
-    end: 10.3,
-    desktopPos: { left: '22%', top: '34%' },
-    mobilePos: { left: '30%', top: '26%' },
-    objectPosition: 'center 25%',
-  },
+// Strictly the 8 curated photos used throughout the butterfly effect (loops seamlessly 1 -> 8 -> 1)
+const BUTTERFLY_MEMORIES = [
   {
     src: '/photos/finale/dhathri_outdoor_srm.jpg',
     shortLabel: 'Radiant Smile',
-    fallbackCaption: 'That effortless smile that brings warmth to every ordinary moment.',
-    start: 7.9,
-    end: 11.8,
-    desktopPos: { left: '50%', top: '27%' },
-    mobilePos: { left: '68%', top: '31%' },
+    caption: 'That effortless smile that brings warmth to every ordinary moment.',
+    tag: 'Memory 01',
+    start: 6.3,
+    end: 9.0,
+    desktopPos: { left: '20%', top: '31%' },
+    mobilePos: { left: '30%', top: '26%' },
     objectPosition: 'center 22%',
   },
   {
-    src: '/photos/montage/dhathri_classroom_smile.jpg',
-    shortLabel: 'College Days',
-    fallbackCaption: 'Even on busy college days, her smile makes everything lighter.',
-    start: 9.4,
+    src: '/photos/finale/dhathri_cafe_floral.jpg',
+    shortLabel: 'Sweet Moment',
+    caption: 'Natural beauty, soft sunshine, and pure happiness in one frame.',
+    tag: 'Memory 02',
+    start: 7.4,
+    end: 10.1,
+    desktopPos: { left: '50%', top: '25%' },
+    mobilePos: { left: '68%', top: '30%' },
+    objectPosition: 'center 22%',
+  },
+  {
+    src: '/photos/montage/davani_lehenga_garden.jpg',
+    shortLabel: 'Garden Bloom',
+    caption: 'Blooming with grace, outshining every flower behind her.',
+    tag: 'Memory 03',
+    start: 8.5,
+    end: 11.2,
+    desktopPos: { left: '78%', top: '33%' },
+    mobilePos: { left: '31%', top: '66%' },
+    objectPosition: 'center 24%',
+  },
+  {
+    src: '/photos/complaints/davani_pink_tshirt.png',
+    shortLabel: 'Good Vibes',
+    caption: 'Effortlessly cheerful energy that brightens every room.',
+    tag: 'Memory 04',
+    start: 9.6,
+    end: 12.3,
+    desktopPos: { left: '24%', top: '64%' },
+    mobilePos: { left: '68%', top: '67%' },
+    objectPosition: 'center 28%',
+  },
+  {
+    src: '/photos/complaints/davani_saree_gold_red.png',
+    shortLabel: 'Golden Grace',
+    caption: 'Warmth, elegance, and quiet confidence in every step.',
+    tag: 'Memory 05',
+    start: 10.7,
     end: 13.4,
     desktopPos: { left: '74%', top: '63%' },
-    mobilePos: { left: '32%', top: '68%' },
-    objectPosition: 'center 32%',
+    mobilePos: { left: '31%', top: '28%' },
+    objectPosition: 'center 16%',
   },
   {
-    src: '/photos/gorgeous/dhathri_fiery_gold_saree.jpg',
-    shortLabel: 'Golden Radiance',
-    fallbackCaption: 'Effortless poise that brightens every room she enters.',
-    start: 11.1,
-    end: 14.9,
-    desktopPos: { left: '24%', top: '62%' },
-    mobilePos: { left: '69%', top: '66%' },
+    src: '/photos/complaints/davani_green_kurti_phone.png',
+    shortLabel: 'Serene Smile',
+    caption: 'Gentle poise and that unmistakable warm smile.',
+    tag: 'Memory 06',
+    start: 11.8,
+    end: 14.5,
+    desktopPos: { left: '49%', top: '66%' },
+    mobilePos: { left: '68%', top: '32%' },
     objectPosition: 'center 22%',
   },
   {
-    src: '/photos/gorgeous/dhathri_ceremony_pink_saree.jpg',
-    shortLabel: 'Timeless Grace',
-    fallbackCaption: 'Warmth, elegance, and quiet confidence in every frame.',
-    start: 12.6,
-    end: 16.2,
-    desktopPos: { left: '76%', top: '32%' },
-    mobilePos: { left: '31%', top: '29%' },
-    objectPosition: 'center 20%',
+    src: '/photos/butterfly/palm_saree_portrait.jpg',
+    shortLabel: 'Traditional Grace',
+    caption: 'Draped in quiet elegance against sunlit palms.',
+    tag: 'Memory 07',
+    start: 12.9,
+    end: 15.6,
+    desktopPos: { left: '22%', top: '33%' },
+    mobilePos: { left: '32%', top: '66%' },
+    objectPosition: 'center 24%',
   },
   {
-    src: '/photos/finale/dhathri_celebration_portrait.png',
-    shortLabel: 'Birthday Queen',
-    fallbackCaption: 'Surrounded by joy, laughter, and golden birthday wishes.',
-    start: 13.9,
-    end: 16.9,
-    desktopPos: { left: '50%', top: '66%' },
+    src: '/photos/complaints/davani_bathukamma_saree.jpg',
+    shortLabel: 'Bathukamma Glow',
+    caption: 'Carrying festive radiance and joy wherever she goes.',
+    tag: 'Memory 08',
+    start: 14.0,
+    end: 16.6,
+    desktopPos: { left: '76%', top: '32%' },
     mobilePos: { left: '67%', top: '67%' },
-    objectPosition: 'center 20%',
+    objectPosition: 'center 18%',
   },
 ];
 
@@ -126,47 +153,13 @@ function supportsWebGL() {
 }
 
 /**
- * Hydrates stage cards and interactive butterfly spotlight gallery directly from birthdayConfig.
+ * Returns strictly the 8 curated butterfly memories so both stage flight and tap reveals use only these 8 photos.
  */
 function collectSiteMemories() {
-  const configLookup = new Map();
-  const addLookup = (src, caption, tag) => {
-    if (!src || configLookup.has(src)) return;
-    configLookup.set(src, { src, caption: caption || '', tag: tag || 'Precious Memory' });
+  return {
+    stageMemories: BUTTERFLY_MEMORIES,
+    allMemories: BUTTERFLY_MEMORIES,
   };
-
-  addLookup(birthdayConfig.intro?.heroImage, 'Where every story began — timeless sweetness.', 'Opening Chapter');
-  birthdayConfig.montage?.forEach((m) => addLookup(m.photo, m.caption, 'Memory Journey'));
-  birthdayConfig.gorgeousTribute?.cards?.forEach((c) => addLookup(c.photo, c.note || c.title, c.tag));
-  birthdayConfig.timeline?.forEach((t) => addLookup(t.photo, t.story || t.title, t.era));
-  birthdayConfig.filmStrip?.forEach((f) => addLookup(f.photo, f.note, 'Film Strip'));
-  birthdayConfig.gallery?.forEach((g) => addLookup(g.src, g.caption, g.tag));
-
-  const hydratedStage = STAGE_MEMORIES.map((item) => {
-    const match = configLookup.get(item.src);
-    return {
-      ...item,
-      caption: match?.caption || item.fallbackCaption,
-      tag: match?.tag || item.shortLabel,
-    };
-  });
-
-  const seen = new Set();
-  const allMemories = [];
-  const pushUnique = (entry) => {
-    if (!entry?.src || seen.has(entry.src)) return;
-    seen.add(entry.src);
-    allMemories.push(entry);
-  };
-
-  hydratedStage.forEach((s) =>
-    pushUnique({ src: s.src, shortLabel: s.shortLabel, caption: s.caption, tag: s.tag })
-  );
-  configLookup.forEach((v) =>
-    pushUnique({ src: v.src, shortLabel: v.tag || 'Memory', caption: v.caption, tag: v.tag })
-  );
-
-  return { stageMemories: hydratedStage, allMemories };
 }
 
 export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
@@ -1362,7 +1355,13 @@ export default function ButterflyEffectIntro({ onComplete, onStartMusic }) {
                 ×
               </button>
               <div className="be-tap-card-frame">
-                <img src={mem.src} alt={mem.shortLabel || mem.tag} loading="eager" decoding="sync" />
+                <img
+                  src={mem.src}
+                  alt={mem.shortLabel || mem.tag}
+                  loading="eager"
+                  decoding="sync"
+                  style={{ objectPosition: mem.objectPosition || 'center 22%' }}
+                />
               </div>
               <p className="be-memory-caption">✦ {mem.shortLabel || mem.tag}</p>
             </div>

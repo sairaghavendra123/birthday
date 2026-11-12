@@ -711,7 +711,8 @@
   height: auto;
   max-height: 240px;
   object-fit: cover;
-  object-position: center 24%;
+  object-position: center 22%;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .be-tap-close {
