@@ -34,7 +34,7 @@ export function createStarfieldMaterial() {
         vColor = aColor;
 
         float dist = max(6.0, -mvPosition.z);
-        gl_PointSize = clamp(aSize * uPixelRatio * (115.0 / dist), 1.4, 15.0);
+        gl_PointSize = clamp(aSize * uPixelRatio * (88.0 / dist), 1.1, 9.5);
       }
     `,
     fragmentShader: `
@@ -47,12 +47,12 @@ export function createStarfieldMaterial() {
         float d = length(uv);
         if (d > 0.5) discard;
 
-        // Soft glowing bokeh orb with warm bright core
-        float core = exp(-d * d * 24.0);
-        float halo = exp(-d * d * 7.5) * 0.55;
-        float intensity = (core + halo) * vAlpha * uOpacity;
+        // Soft glowing bokeh orb with restrained luminosity
+        float core = exp(-d * d * 26.0);
+        float halo = exp(-d * d * 8.5) * 0.32;
+        float intensity = (core + halo) * vAlpha * uOpacity * 0.78;
 
-        gl_FragColor = vec4(vColor * (0.95 + core * 0.35), clamp(intensity, 0.0, 0.92));
+        gl_FragColor = vec4(vColor * (0.9 + core * 0.25), clamp(intensity, 0.0, 0.64));
       }
     `,
     transparent: true,
